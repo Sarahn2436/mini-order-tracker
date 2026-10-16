@@ -11,7 +11,7 @@
     <header class="w-full lg:max-w-4xl max-w-[335px] text-sm mb-6 mx-auto">
         <nav>
             <a href="{{ route('dashboard') }}">Dashboard</a>
-            <a href="{{ route('customers') }}">Customers</a>
+            <a href="{{ route('customers.index') }}">Customers</a>
             <a href="{{ route('orders') }}">Orders</a>
         </nav>
     </header>
