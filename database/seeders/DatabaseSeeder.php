@@ -10,14 +10,14 @@ class DatabaseSeeder extends Seeder
 {
     use WithoutModelEvents;
 
-    /**
+        /**
      * Seed the application's database.
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        \App\Models\Customer::factory(20)->create();
 
-        User::factory()->create([
+        \App\Models\User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
