@@ -3,6 +3,6 @@
 @section('title', 'Dashboard')
 
 @section('content')
-    <h1>Dashboard</h1>
-    <p>Welcome to the Dashboard</p>
+    <h1>{{ $pageTitle }}</h1>
+    <p>You are sharing this Dashboard with {{ $OnlineCount }} others.</p>
 @endsection
