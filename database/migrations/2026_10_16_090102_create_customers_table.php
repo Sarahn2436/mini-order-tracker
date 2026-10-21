@@ -11,7 +11,6 @@ return new class extends Migration
      */
 public function up(): void
 {
-    // Make sure it says 'Blueprint $table' inside the function parentheses:
     Schema::create('customers', function (Blueprint $table) {
         $table->id();
         $table->string('name');
