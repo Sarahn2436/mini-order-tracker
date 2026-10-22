@@ -10,7 +10,7 @@ class DatabaseSeeder extends Seeder
 {
     use WithoutModelEvents;
 
-        /**
+    /**
      * Seed the application's database.
      */
     public function run(): void
@@ -21,5 +21,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
+
+        \App\Models\Order::factory(100)->create();
     }
 }

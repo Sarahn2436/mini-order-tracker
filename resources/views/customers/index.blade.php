@@ -1,50 +1,64 @@
 @extends('layouts.app')
 
 @section('content')
-    <div style="margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center; font-family: sans-serif;">
-        <h1 style="margin: 0; font-size: 24px; color: #111;">Customers</h1>
-        <a href="{{ route('customers.create') }}" style="background: #333; color: white; padding: 6px 12px; text-decoration: none; border-radius: 4px; font-size: 14px;">
-            Add Customer
-        </a>
-    </div>
+    <div class="container" style="font-family: 'Lato', sans-serif; margin-top: 20px;">
+        <h1 style="font-size: 28px; color: #111; margin-bottom: 24px; font-weight: 700;">Customers</h1>
 
-    @if(session('success'))
-        <div style="padding: 12px; margin-bottom: 20px; border: 1px solid #ccc; font-size: 14px; font-family: sans-serif; color: #333;">
-            {{ session('success') }}
+        <div style="margin-bottom: 20px;">
+            <a href="{{ route('customers.create') }}"
+                style="background: #333; color: white; padding: 8px 16px; text-decoration: none; border-radius: 4px; display: inline-block; font-size: 14px;">
+                + Add New Customer
+            </a>
         </div>
-    @endif
 
-    <table style="width: 100%; text-align: left; border-collapse: collapse; font-family: sans-serif; font-size: 14px;">
-        <thead>
-            <tr style="border-bottom: 2px solid #333; color: #111;">
-                <th style="padding: 10px 8px; font-weight: 600;">Name</th>
-                <th style="padding: 10px 8px; font-weight: 600;">Email</th>
-                <th style="padding: 10px 8px; font-weight: 600;">Company</th>
-                <th style="padding: 10px 8px; font-weight: 600; text-align: right;">Actions</th>
-            </tr>
-        </thead>
-        <tbody style="color: #444;">
-            @foreach($customers as $customer)
-                <tr style="border-bottom: 1px solid #eee;">
-                    <td style="padding: 12px 8px;">{{ $customer->name }}</td>
-                    <td style="padding: 12px 8px;">{{ $customer->email }}</td>
-                    <td style="padding: 12px 8px;">{{ $customer->company ?? '—' }}</td>
-                    <td style="padding: 12px 8px; text-align: right;">
-                        <a href="{{ route('customers.show', $customer->id) }}" style="color: #111; margin-left: 12px;">View</a>
-                        <a href="{{ route('customers.edit', $customer->id) }}" style="color: #111; margin-left: 12px;">Edit</a>
-                        
-                        <form action="{{ route('customers.destroy', $customer->id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Are you sure?');">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" style="background: none; border: none; padding: 0; color: #111; text-decoration: underline; cursor: pointer; font-size: 14px; margin-left: 12px; font-family: inherit;">
-                                Delete
-                            </button>
-                        </form>
-                    </td>
+        <table border="1" cellpadding="10"
+            style="width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; border-color: black; margin-bottom: 20px;">
+            <thead>
+                <tr style="background-color: #f2f2f2; font-weight: 700; color: #111;">
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Company</th>
+                    <th style="text-align: center;">Actions</th>
                 </tr>
-            @endforeach
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @forelse($customers as $customer)
+                    <tr>
+                        <td>
+                            <a href="{{ route('customers.show', $customer->id) }}" style="font-weight: 600;">
+                                {{ $customer->name }}
+                            </a>
+                        </td>
+                        <td>{{ $customer->email }}</td>
+                        <td>{{ $customer->company ?? '—' }}</td>
+                        <td style="text-align: center; white-space: nowrap;">
+                            <a href="{{ route('customers.show', $customer->id) }}"
+                                style="color: #111; text-decoration: underline; margin-right: 10px;">View</a>
+                            <a href="{{ route('customers.edit', $customer->id) }}"
+                                style="color: #111; text-decoration: underline; margin-right: 10px;">Edit</a>
+
+                            <form action="{{ route('customers.destroy', $customer->id) }}" method="POST"
+                                style="display: inline-block;"
+                                onsubmit="return confirm('Are you sure you want to delete this customer?');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit"
+                                    style="background: none; border: none; color: #111; padding: 0; cursor: pointer; font-family: inherit; text-decoration: underline; font-size: inherit;">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="4" style="text-align: center; color: #888;">No customers found.</td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
+
+        @if(method_exists($customers, 'links'))
+            <div class="custom-pagination" style="margin-top: 20px; margin-bottom: 40px;">
+                {{ $customers->appends(request()->query())->links() }}
+            </div>
+        @endif
+    </div>
 @endsection
-
-
