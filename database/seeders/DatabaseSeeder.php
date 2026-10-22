@@ -15,13 +15,30 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        \App\Models\Customer::factory(20)->create();
+        $customers = \App\Models\Customer::factory(20)->create();
 
         \App\Models\User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
 
-        \App\Models\Order::factory(100)->create();
+        $totalOrdersNeeded = 100;
+        $currentOrderCount = 0;
+
+        while ($currentOrderCount < $totalOrdersNeeded) {
+            $randomCustomer = $customers->random();
+
+            $chunkSize = rand(1, 4);
+
+            if ($currentOrderCount + $chunkSize > $totalOrdersNeeded) {
+                $chunkSize = $totalOrdersNeeded - $currentOrderCount;
+            }
+
+            \App\Models\Order::factory($chunkSize)->create([
+                'customer_id' => $randomCustomer->id,
+            ]);
+
+            $currentOrderCount += $chunkSize;
+        }
     }
 }

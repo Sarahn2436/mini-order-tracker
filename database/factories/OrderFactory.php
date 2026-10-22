@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Order;
-use App\Models\Customer; // Added so we can link orders to existing customers
+use App\Models\Customer;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,20 +18,34 @@ class OrderFactory extends Factory
      */
     public function definition(): array
     {
+        $product = $this->faker->randomElement(['Laptop', 'Keyboard', 'Monitor', 'Desk Chair', 'Mouse Pad']);
+
+        $basePrice = match ($product) {
+            'Laptop' => 850.72,
+            'Monitor' => 290.99,
+            'Desk Chair' => 90.39,
+            'Keyboard' => 40.79,
+            'Mouse Pad' => 23.99,
+        };
+
+        $quantity = match ($product) {
+            'Laptop' => $this->faker->numberBetween(1, 10),
+            'Mouse Pad', 'Keyboard' => $this->faker->numberBetween(1, 40),
+            default => $this->faker->numberBetween(1, 20)
+        };
+
+        $full_price = $quantity * $basePrice;
+        $status = $this->faker->randomElement(['New', 'In production', 'Despatched', 'Cancelled']);
+
         return [
-            'customer_id' => Customer::pluck('id')->random(),
-
-            'order_number' => 'ORD-' . $this->faker->unique()->numberBetween(1000, 9999),
-
-            'product' => $this->faker->randomElement(['Laptop', 'Keyboard', 'Monitor', 'Desk Chair', 'Mouse Pad']),
-
-            'quantity' => $this->faker->numberBetween(1, 5),
-
-            'unit_price' => $this->faker->randomFloat(2, 10, 1200),
-
-            'status' => $this->faker->randomElement(['New', 'In production', 'Despatched', 'Cancelled']),
-
-            'due_date' => $this->faker->dateTimeBetween('now', '+1 month')->format('Y-m-d'),
+            'order_number' => 'ORD-' . $this->faker->unique()->numberBetween(100000, 999999),
+            'product' => $product,
+            'quantity' => $quantity,
+            'unit_price' => $full_price,
+            'status' => $status,
+            'due_date' => ($status === 'Cancelled')
+                ? 'N/A'
+                : $this->faker->dateTimeBetween('now', '+2 month')->format('Y-m-d'),
         ];
     }
 }

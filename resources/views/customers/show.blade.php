@@ -44,7 +44,7 @@
                         <td><strong>{{ $order->order_number }}</strong></td>
                         <td>{{ $order->product }}</td>
                         <td>{{ $order->quantity }}</td>
-                        <td>${{ number_format($order->unit_price, 2) }}</td>
+                        <td>£{{ number_format($order->unit_price, 2) }}</td>
                         <td>{{ $order->status }}</td>
                         <td>{{ $order->due_date }}</td>
                     </tr>

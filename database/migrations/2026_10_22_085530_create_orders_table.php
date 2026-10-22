@@ -18,9 +18,10 @@ return new class extends Migration {
             $table->integer('quantity');
             $table->decimal('unit_price', 8, 2);
             $table->enum('status', ['New', 'In production', 'Despatched', 'Cancelled'])->default('New');
-            $table->date('due_date');
+            $table->string('due_date')->nullable();
             $table->timestamps();
         });
+
     }
 
     /**

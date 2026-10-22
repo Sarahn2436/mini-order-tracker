@@ -33,9 +33,9 @@
                         <td>{{ $customer->company ?? '—' }}</td>
                         <td style="text-align: center; white-space: nowrap;">
                             <a href="{{ route('customers.show', $customer->id) }}"
-                                style="color: #111; text-decoration: underline; margin-right: 10px;">View</a>
+                                style="color: #0000ee; text-decoration: underline; margin-right: 10px;">View</a>
                             <a href="{{ route('customers.edit', $customer->id) }}"
-                                style="color: #111; text-decoration: underline; margin-right: 10px;">Edit</a>
+                                style="color: #0000ee; text-decoration: underline; margin-right: 10px;">Edit</a>
 
                             <form action="{{ route('customers.destroy', $customer->id) }}" method="POST"
                                 style="display: inline-block;"
@@ -43,7 +43,7 @@
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit"
-                                    style="background: none; border: none; color: #111; padding: 0; cursor: pointer; font-family: inherit; text-decoration: underline; font-size: inherit;">Delete</button>
+                                    style="background: none; border: none; color: #0000ee; padding: 0; cursor: pointer; font-family: inherit; text-decoration: underline; font-size: inherit;">Delete</button>
                             </form>
                         </td>
                     </tr>
