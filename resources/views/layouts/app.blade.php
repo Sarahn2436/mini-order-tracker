@@ -80,31 +80,45 @@
 </head>
 
 <body class="bg-[#FDFDFC] dark:bg-[#0a0a0a] text-[#1b1b1b] flex flex-col min-h-screen">
-    <!-- Header/navigation -->
-    <header class="w-full lg:max-w-4xl max-w-[335px] text-sm mb-6 mx-auto">
-        <nav class="nav">
-            <div class="nav-links">
-                <a href="{{ route('dashboard') }}"
-                    class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">Dashboard</a>
-                <a href="{{ route('customers.index') }}"
-                    class="{{ request()->routeIs('customers.index') ? 'active' : '' }}">Customers</a>
-                <a href="{{ route('orders') }}" class="{{ request()->routeIs('orders') ? 'active' : '' }}">Orders</a>
-            </div>
 
-            <!-- searc bar stuff -->
-            <div class="search-container">
-                <form action="{{ route('orders') }}" method="GET">
-                    <input type="text" placeholder="Search..." name="search" value="{{ request('search') }}">
-                    <button type="submit">Go</button>
-                </form>
-            </div>
-        </nav>
-    </header>
+    <body class="bg-[#FDFDFC] dark:bg-[#0a0a0a] text-[#1b1b1b] flex flex-col min-h-screen">
+        <!-- Header/navigation -->
+        <header class="w-full lg:max-w-4xl max-w-[335px] text-sm mb-6 mx-auto">
+            <nav class="nav">
+                <div class="nav-links">
+                    <a href="{{ route('dashboard') }}"
+                        class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">Dashboard</a>
+                    <a href="{{ route('customers.index') }}"
+                        class="{{ request()->routeIs('customers.index') ? 'active' : '' }}">Customers</a>
+                    <a href="{{ route('orders') }}"
+                        class="{{ request()->routeIs('orders') ? 'active' : '' }}">Orders</a>
+                </div>
 
-    <!-- main content -->
-    <main class="flex-grow w-full lg:max-w-4xl max-w-[335px] mx-auto px-6">
-        @yield('content')
-    </main>
-</body>
+                <!-- search bar stuff -->
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div class="search-container" style="padding: 0;">
+                        <form action="{{ route('orders') }}" method="GET">
+                            <input type="text" placeholder="Search..." name="search" value="{{ request('search') }}">
+                            <button type="submit">Go</button>
+                        </form>
+                    </div>
+                    <!--logout stuff-->
+                    <form action="{{ route('logout') }}" method="POST" style="margin: 0; padding-right: 16px;">
+                        @csrf
+                        <button type="submit"
+                            style="background: #ddd; color: black; border: none; padding: 6px 12px; font-size: 14px; border-radius: 4px; cursor: pointer; font-weight: bold; font-family: inherit;">
+                            Logout
+                        </button>
+                    </form>
+                </div>
+            </nav>
+        </header>
+
+
+        <!-- main content -->
+        <main class="flex-grow w-full lg:max-w-4xl max-w-[335px] mx-auto px-6">
+            @yield('content')
+        </main>
+    </body>
 
 </html>
