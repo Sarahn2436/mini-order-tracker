@@ -1,30 +1,14 @@
 <?php
-
+# defines the routes for the web interface
 use Illuminate\Support\Facades\Route;
-use Illuminate\Http\Request;
 use App\Http\Controllers\CustomerController;
-use App\Models\Order;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\OrderController;
 
-Route::get('/', function () {
-    return view('dashboard');
-});
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->name('dashboard');
+Route::get('/', [DashboardController::class, 'index']);
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
 Route::resource('customers', CustomerController::class);
 
-Route::get('/orders', function (Request $request) {
-    $query = Order::with('customer');
-
-    if ($request->filled('status')) {
-        $query->where('status', $request->status);
-    }
-
-    $orders = $query->paginate(20);
-
-    return view('orders', compact('orders'));
-})->name('orders');
-
-?>
+Route::get('/orders', [OrderController::class, 'showOrders'])->name('orders');

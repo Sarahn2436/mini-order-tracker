@@ -1,3 +1,4 @@
+<!-- content for orders page -->
 @extends('layouts.app')
 
 @section('title', 'Orders')

@@ -56,6 +56,79 @@
         </table>
 
         @if(method_exists($customers, 'links'))
+            <style>
+                .custom-pagination nav {
+                    display: block !important;
+                }
+
+                .custom-pagination nav div p {
+                    display: block !important;
+                    font-size: 15px !important;
+                    color: #111 !important;
+                    margin: 0 0 12px 0 !important;
+                    font-family: inherit;
+                }
+
+                .custom-pagination nav div p span {
+                    border: none !important;
+                    background: none !important;
+                    padding: 0 !important;
+                    display: inline !important;
+                    min-width: 0 !important;
+                    height: auto !important;
+                    font-weight: bold !important;
+                }
+
+                .custom-pagination ul {
+                    list-style-type: none !important;
+                    padding: 0 !important;
+                    margin: 0 !important;
+                    display: flex !important;
+                    flex-direction: row !important;
+                    flex-wrap: wrap !important;
+                    gap: 6px !important;
+                    align-items: center !important;
+                }
+
+                .custom-pagination li {
+                    display: inline-block !important;
+                }
+
+                .custom-pagination ul a,
+                .custom-pagination ul span {
+                    display: flex !important;
+                    align-items: center !important;
+                    justify-content: center !important;
+                    text-decoration: none !important;
+                    padding: 6px 12px !important;
+                    min-width: 36px !important;
+                    height: 36px !important;
+                    border: 1px solid #ced4da !important;
+                    border-radius: 4px !important;
+                    color: #333 !important;
+                    background-color: #fff !important;
+                    font-size: 14px !important;
+                    box-sizing: border-box !important;
+                }
+
+                .custom-pagination ul li[class*="active"] span,
+                .custom-pagination ul span[aria-current="page"] {
+                    background-color: #2d3748 !important;
+                    color: white !important;
+                    border-color: #2d3748 !important;
+                    font-weight: 600 !important;
+                }
+
+                .custom-pagination ul li[class*="disabled"] span,
+                .custom-pagination ul span[aria-disabled="true"] {
+                    color: #a0aec0 !important;
+                    background-color: #f7fafc !important;
+                    border-color: #e2e8f0 !important;
+                    cursor: not-allowed !important;
+                }
+            </style>
+
+
             <div class="custom-pagination" style="margin-top: 20px; margin-bottom: 40px;">
                 {{ $customers->appends(request()->query())->links() }}
             </div>

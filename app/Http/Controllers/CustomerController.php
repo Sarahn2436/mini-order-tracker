@@ -1,17 +1,27 @@
 <?php
-
+# caclulates data to feed to the customer page
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use App\Models\Order;
 use Illuminate\Http\RedirectResponse;
 
 class CustomerController extends Controller
 {
-    public function index(): View
+    public function index(Request $request): View
     {
-        $customers = Customer::all();
+        $search = $request->query('search');
+
+        $customers = Customer::query()
+            ->when($search, function ($query, $search) {
+                $query->where('email', 'LIKE', "%{$search}%")
+                    ->orWhere('name', 'LIKE', "%{$search}%");
+            })
+            ->latest()
+            ->paginate(10);
+
         return view('customers.index', compact('customers'));
     }
 
@@ -33,7 +43,7 @@ class CustomerController extends Controller
         return redirect()->route('customers.index')->with('success', 'Customer created successfully!');
     }
 
-    public function show(Customer $customer)
+    public function show(Customer $customer): View
     {
         $customer->load('orders');
 

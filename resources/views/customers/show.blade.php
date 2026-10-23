@@ -1,3 +1,4 @@
+# displays detailed profile view for a customer
 @extends('layouts.app')
 
 @section('content')

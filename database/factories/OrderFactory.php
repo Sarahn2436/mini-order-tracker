@@ -1,4 +1,5 @@
 <?php
+/** generates dummy data for the orders table */
 
 namespace Database\Factories;
 

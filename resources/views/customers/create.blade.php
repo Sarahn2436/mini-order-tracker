@@ -1,3 +1,5 @@
+# lets you create/add a customer from the webpage
+
 @extends('layouts.app')
 
 @section('content')

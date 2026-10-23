@@ -1,4 +1,5 @@
 <?php
+# populates a database with fake data
 
 namespace Database\Seeders;
 
