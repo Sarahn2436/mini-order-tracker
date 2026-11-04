@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CustomerController;
 
 Route::get('/Dashboard', function () {
     return view('Dashboard', [
@@ -13,3 +14,4 @@ Route::get('/Dashboard', function () {
 Route::view('/Dashboard', 'Dashboard')->name('Dashboard');
 Route::view('/Customers', 'Customers')->name('Customers');
 Route::view('/Orders', 'Orders')->name('Orders');
+Route::get('/customers', [CustomerController::class, 'index']);
