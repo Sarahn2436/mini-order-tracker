@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.Staff_view.app')
 
 @section('content')
     <div class="container" style="font-family: 'Lato', sans-serif; margin-top: 20px;">

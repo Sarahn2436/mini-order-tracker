@@ -10,7 +10,7 @@ class AuthController extends Controller
 {
     public function showLogin()
     {
-        return view('login');
+        return view('layouts.Staff_view.staffLogin.login');
     }
 
     public function login(Request $request)
@@ -35,12 +35,13 @@ class AuthController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect()->route('login');
+
+        return redirect()->route('staff.login');
     }
 
     public function showRegister()
     {
-        return view('register');
+        return view('layouts.Staff_view.staffLogin.register');
     }
 
     public function register(Request $request)
@@ -48,13 +49,13 @@ class AuthController extends Controller
         $data = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'], // Requires password_confirmation field
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
 
         $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
-            'password' => $data['password'],
+            'password' => bcrypt($data['password']),
         ]);
 
         Auth::login($user);

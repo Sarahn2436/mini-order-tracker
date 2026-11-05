@@ -1,6 +1,6 @@
 # lets you create/add a customer from the webpage
 
-@extends('layouts.app')
+@extends('layouts.Staff_view.app')
 
 @section('content')
     <div

@@ -22,7 +22,7 @@ class CustomerController extends Controller
             ->latest()
             ->paginate(10);
 
-        return view('customers.index', compact('customers'));
+        return view('layouts.Staff_view.customers.index', compact('customers'));
     }
 
     public function create(): View

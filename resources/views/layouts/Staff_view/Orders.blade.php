@@ -1,5 +1,5 @@
 <!-- content for orders page -->
-@extends('layouts.app')
+@extends('layouts.Staff_view.app')
 
 @section('title', 'Orders')
 

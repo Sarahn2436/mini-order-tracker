@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mini Order Tracker - Login</title>
+    <title>Mini Order Tracker - Register</title>
     <style>
         body {
             font-family: sans-serif;
@@ -16,7 +16,7 @@
             margin: 0;
         }
 
-        .login-card {
+        .register-card {
             background: white;
             padding: 30px;
             border-radius: 8px;
@@ -70,8 +70,8 @@
 
 <body>
 
-    <div class="login-card">
-        <h2 style="margin-top:0; margin-bottom:20px; text-align:center;">Account Login</h2>
+    <div class="CustomerRegister-card">
+        <h2 style="margin-top:0; margin-bottom:20px; text-align:center;">Create Account</h2>
 
         @if ($errors->any())
             <div class="error-message">
@@ -79,26 +79,36 @@
             </div>
         @endif
 
-        <form action="{{ route('login') }}" method="POST">
+        <form action="{{ route('customer.register.submit') }}" method="POST">
             @csrf
 
             <div class="form-group">
-                <label for="email">Email Address</label>
-                <input type="email" id="email" name="email" value="{{ old('email') }}" required autofocus>
+                <label for="Customername">Full Name</label>
+                <input type="text" id="Customername" name="Customername" value="{{ old('name') }}" required autofocus>
             </div>
 
             <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" required>
+                <label for="Customeremail">Email Address</label>
+                <input type="email" id="Customeremail" name="Customeremail" value="{{ old('email') }}" required>
             </div>
 
-            <button type="submit" class="btn-submit">Sign In</button>
+            <div class="form-group">
+                <label for="Customerpassword">Password</label>
+                <input type="password" id="Customerpassword" name="Customerpassword" required>
+            </div>
+
+            <div class="form-group">
+                <label for="Customerpassword_confirmation">Confirm Password</label>
+                <input type="password" id="Customerpassword_confirmation" name="Customerpassword_confirmation" required>
+            </div>
+
+            <button type="submit" class="btn-submit">Sign Up</button>
         </form>
 
         <p style="text-align: center; margin-top: 20px; font-size: 14px;">
-            Don't have an account? <a href="{{ route('register') }}" style="color: #333; font-weight: bold;">Sign up</a>
+            Already have an account? <a href="{{ route('customer.login') }}" style="color: #333; font-weight: bold;">Log
+                in</a>
         </p>
-
     </div>
 
 </body>

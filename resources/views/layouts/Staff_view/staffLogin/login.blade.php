@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mini Order Tracker - Register</title>
+    <title>Mini Order Tracker - Login</title>
     <style>
         body {
             font-family: sans-serif;
@@ -16,7 +16,7 @@
             margin: 0;
         }
 
-        .register-card {
+        .login-card {
             background: white;
             padding: 30px;
             border-radius: 8px;
@@ -70,8 +70,8 @@
 
 <body>
 
-    <div class="register-card">
-        <h2 style="margin-top:0; margin-bottom:20px; text-align:center;">Create Account</h2>
+    <div class="login-card">
+        <h2 style="margin-top:0; margin-bottom:20px; text-align:center;">Admin account Login</h2>
 
         @if ($errors->any())
             <div class="error-message">
@@ -79,17 +79,13 @@
             </div>
         @endif
 
-        <form action="{{ route('register') }}" method="POST">
+        <form action="{{ route('staff.login.submit') }}" method="POST">
+
             @csrf
 
             <div class="form-group">
-                <label for="name">Full Name</label>
-                <input type="text" id="name" name="name" value="{{ old('name') }}" required autofocus>
-            </div>
-
-            <div class="form-group">
                 <label for="email">Email Address</label>
-                <input type="email" id="email" name="email" value="{{ old('email') }}" required>
+                <input type="email" id="email" name="email" value="{{ old('email') }}" required autofocus>
             </div>
 
             <div class="form-group">
@@ -97,17 +93,14 @@
                 <input type="password" id="password" name="password" required>
             </div>
 
-            <div class="form-group">
-                <label for="password_confirmation">Confirm Password</label>
-                <input type="password" id="password_confirmation" name="password_confirmation" required>
-            </div>
-
-            <button type="submit" class="btn-submit">Sign Up</button>
+            <button type="submit" class="btn-submit">log in</button>
         </form>
 
         <p style="text-align: center; margin-top: 20px; font-size: 14px;">
-            Already have an account? <a href="{{ route('login') }}" style="color: #333; font-weight: bold;">Log in</a>
+            Don't have an account? <a href="{{ route('staff.register') }}" style="color: #333; font-weight: bold;">Sign
+                up</a>
         </p>
+
     </div>
 
 </body>

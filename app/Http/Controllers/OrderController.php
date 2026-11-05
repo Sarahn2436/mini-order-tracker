@@ -11,7 +11,6 @@ class OrderController extends Controller
     public function showOrders(Request $request): View
     {
         $search = $request->query('search');
-        // 1. Capture the incoming status parameter from the dropdown selection
         $status = $request->query('status');
 
         $orders = Order::query()
@@ -34,7 +33,7 @@ class OrderController extends Controller
             ->orderBy('orders.created_at', 'desc')
             ->paginate(15);
 
-        return view('Orders', compact('orders'));
+        return view('layouts.staff_view.Orders', compact('orders'));
     }
 }
 

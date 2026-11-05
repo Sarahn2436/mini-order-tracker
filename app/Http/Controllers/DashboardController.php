@@ -47,7 +47,7 @@ class DashboardController extends Controller
             $chartData[] = $ordersOverTime[$dateKey] ?? 0;
         }
 
-        return view('dashboard', compact(
+        return view('layouts.Staff_view.Dashboard', compact(
             'ordersTodayCount',
             'totalValueOpenOrders',
             'ordersPerStatus',

@@ -1,5 +1,6 @@
 <!-- content for dashboard page -->
-@extends('layouts.app')
+@extends('layouts.Staff_view.app')
+
 
 @section('title', 'Dashboard Summary')
 

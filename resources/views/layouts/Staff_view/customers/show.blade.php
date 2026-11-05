@@ -1,5 +1,5 @@
 # displays detailed profile view for a customer
-@extends('layouts.app')
+@extends('layouts.Staff_view.app')
 
 @section('content')
     <div style="max-width: 100%; margin: 20px 0; font-family: sans-serif; font-size: 14px; color: #333;">
