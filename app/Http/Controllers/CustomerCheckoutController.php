@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 class CustomerCheckoutController extends Controller
 {
-    public function index()
+    public function CustomerCheckout()
     {
         return view('layouts.Customer_view.CustomerCheckout');
     }

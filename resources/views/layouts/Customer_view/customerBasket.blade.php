@@ -58,11 +58,12 @@
                         Total: <span
                             style="color: #2c3e50; font-size: 22px; margin-left: 8px;">${{ number_format($totalPrice, 2) }}</span>
                     </div>
-
-                    <button
-                        style="background-color: #333; color: white; border: none; padding: 12px 28px; font-size: 16px; font-weight: bold; border-radius: 6px; cursor: pointer; transition: background 0.2s;">
-                        Proceed to Checkout
-                    </button>
+                    <form action="{{ route('customer.checkout') }}" method="GET">
+                        <button
+                            style="background-color: #333; color: white; border: none; padding: 12px 28px; font-size: 16px; font-weight: bold; border-radius: 6px; cursor: pointer; transition: background 0.2s;">
+                            Proceed to Checkout
+                        </button>
+                    </form>
                 </div>
             </div>
         @endif
