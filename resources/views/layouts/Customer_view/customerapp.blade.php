@@ -109,7 +109,7 @@
             <div class="nav-links">
                 <a href="{{ route('customer.orders') }}">customer orders</a>
                 <a href="{{ route('customer.dashboard') }}">customer dashboard</a>
-                <a href="{{ route('customer.basket') }}" class="">basket</a>
+                <a href="{{ route('customer.checkout') }}" class="">Checkout</a>
             </div>
 
             <!-- nav container-->

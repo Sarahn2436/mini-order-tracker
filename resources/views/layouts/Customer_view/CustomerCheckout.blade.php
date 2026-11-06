@@ -95,7 +95,7 @@
     </style>
 
     <div class="checkout-container">
-        <form class="checkout-form" id="checkoutForm" action="#" method="post">
+        <form class="checkout-form" id="checkoutForm" action="#" method="GET">
 
             <fieldset>
                 <legend>Shipping Information</legend>
