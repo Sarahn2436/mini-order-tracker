@@ -79,7 +79,7 @@
     </style>
 </head>
 
-<body class="bg-[#FDFDFC] dark:bg-[#0a0a0a] text-[#1b1b1b] flex flex-col min-h-screen">
+<body class="bg-[#FDFDFC] g-[#0a0a0a] text-[#1b1b1b] flex flex-col min-h-screen">
 
     <body class="bg-[#FDFDFC] dark:bg-[#0a0a0a] text-[#1b1b1b] flex flex-col min-h-screen">
         <!-- Header/navigation -->

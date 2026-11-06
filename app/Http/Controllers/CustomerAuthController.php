@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\Product; 
+use App\Models\Order;
 
 class CustomerAuthController extends Controller
 {
@@ -34,6 +36,13 @@ class CustomerAuthController extends Controller
             'Customeremail' => 'The provided credentials do not match our records.',
         ])->onlyInput('Customeremail');
     }
+
+    public function login()
+{
+    return view('layouts.Customer_view.customerLogin.CustomerLogin');
+
+}
+
     public function logout(Request $request)
     {
         Auth::logout();
@@ -72,9 +81,29 @@ class CustomerAuthController extends Controller
         return redirect()->route('customer.dashboard');
     }
 
-    public function CustomerDashboard()
-    {
-        return view('layouts.Customer_view.customerLogin.CustomerDashboard');
+
+
+public function CustomerDashboard(Request $request)
+{
+    $query = Product::query();
+
+    // filtering logic
+    if ($request->has('search') && $request->filled('search')) {
+        $searchTerm = $request->input('search');
+        $query->where('name', 'LIKE', "%{$searchTerm}%");
     }
+
+    // fetch either filtered or all products
+    $products = $query->get();
+
+    // return the dashboard
+    return view('layouts.Customer_view.CustomerDashboard', compact('products'));
+}
+    public function customerBasket() 
+{
+    $basket = session()->get('basket', []);
+
+    return view('layouts.Customer_view.CustomerBasket', compact('basket'));
+}
 }
 

@@ -6,6 +6,10 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\BasketController;
+use App\Http\Controllers\CustomerCheckoutController;
+
 
 Route::redirect('/', '/customerLogin');
 
@@ -40,6 +44,19 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/customer-dashboard', [CustomerAuthController::class, 'CustomerDashboard'])->name('customer.dashboard');
+    Route::get('/customer-basket', [CustomerAuthController::class, 'customerBasket'])->name('customer.basket');
+    Route::post('/basket/add/{id}', [BasketController::class, 'add'])->name('basket.add');
+    Route::delete('/basket/remove/{id}', [BasketController::class, 'remove'])->name('basket.remove');
     Route::post('/customer-logout', [CustomerAuthController::class, 'logout'])->name('customer.logout');
+    Route::get('/product-view/{slug}', [ProductController::class, 'show'])-> name('customer.product');
+    Route::get('/customer-checkout', [CustomerCheckoutController::class, 'CustomerCheckout'])->name('customer.checkout');
+
+    Route::get('/customerorders', function () {
+        return view('layouts.Customer_view.customerorders');
+    })->name('customer.orders');
 });
+
+Route::get('/customer-login', [CustomerAuthController::class, 'login'])->name('login');
+
+
 ?>

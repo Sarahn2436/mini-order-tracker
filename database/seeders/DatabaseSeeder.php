@@ -1,11 +1,11 @@
 <?php
-# populates a database with fake data
 
 namespace Database\Seeders;
 
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Database\Seeders\ProductApiSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -16,9 +16,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $customers = \App\Models\Customer::factory(20)->create();
+    $this->call([ProductApiSeeder::class]);
 
-        \App\Models\User::factory()->create([
+    $customers = \App\Models\Customer::factory(20)->create();
+    
+
+        User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
@@ -28,7 +31,6 @@ class DatabaseSeeder extends Seeder
 
         while ($currentOrderCount < $totalOrdersNeeded) {
             $randomCustomer = $customers->random();
-
             $chunkSize = rand(1, 4);
 
             if ($currentOrderCount + $chunkSize > $totalOrdersNeeded) {
@@ -43,3 +45,4 @@ class DatabaseSeeder extends Seeder
         }
     }
 }
+
