@@ -1,38 +1,51 @@
+<a href="{{ route('customers.create') }}">
+    Add Customer
+</a>
 <!DOCTYPE html>
 <html>
 
-<head>
-    <title>Customers</title>
-</head>
+    <head>
+        <title>Customers</title>
+    </head>
 
-<body>
+    <body>
 
-    <h1>All Customers</h1>
+        <h1>All Customers</h1>
 
-    <table border="1" cellpadding="10">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Company</th>
-                <th>Created At</th>
-            </tr>
-        </thead>
+        @if (session('success'))
+            <p role="status">{{ session('success') }}</p>
+        @endif
 
-        <tbody>
-            @foreach ($customers as $customer)
+        <table>
+            <thead>
                 <tr>
-                    <td>{{ $customer->id }}</td>
-                    <td>{{ $customer->name }}</td>
-                    <td>{{ $customer->email }}</td>
-                    <td>{{ $customer->company ?? 'N/A' }}</td>
-                    <td>{{ $customer->created_at }}</td>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Company</th>
+                    <th>Created At</th>
                 </tr>
-            @endforeach
-        </tbody>
-    </table>
+            </thead>
 
-</body>
+            <tbody>
+                @foreach ($customers as $customer)
+                    <tr>
+                        <td>{{ $customer->id }}</td>
+                        <td>{{ $customer->name }}</td>
+                        <td>{{ $customer->email }}</td>
+                        <td>{{ $customer->company ?? 'N/A' }}</td>
+                        <td>{{ $customer->created_at }}</td>
+
+                        <td>
+                            <a href="{{ route('customers.edit', $customer->id) }}">
+                                Edit
+                            </a>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+
+    </body>
 
 </html>

@@ -1,26 +1,21 @@
-<form action="{{ route('customers.store') }}" method="PUT">
+<form action="{{ route('customers.store') }}" method="POST">
+    @csrf
 
-    @csrf  
-    <input type="text" ; name="First Name" ; placeholder="First name">
+    <input type="text" name="name" placeholder="Full Name" value="{{ old('name') }}">
     @error('name')
-    <p>{{ $message }}</p>
-@enderror
+        <p>{{ $message }}</p>
+    @enderror
 
-    <input type="text" ; name="Last Name" ; placeholder="Last name">
-    @error('name')
-    <p>{{ $message }}</p>
-@enderror
+    <input type="email" name="email" placeholder="E-mail" value="{{ old('email') }}">
+    @error('email')
+        <p>{{ $message }}</p>
+    @enderror
 
-    <input type="email"; name="Email"; placeholder="E-mail">
-    @error('name')
-    <p>{{ $message }}</p>
-@enderror
+    <input type="text" name="company" placeholder="Company name (optional)" value="{{ old('company') }}">
+    @error('company')
+        <p>{{ $message }}</p>
+    @enderror
 
-    <input type="text"; name="Company"; placeholder="Company name (optional)">
-    @error('name')
-    <p>{{ $message }}</p>
-@enderror
-
-    <button type="submit">Create New Customer</button>
+    <button type="submit">Add Customer</button>
     
 </form>
