@@ -81,6 +81,12 @@ class CustomerAuthController extends Controller
         return redirect()->route('customer.dashboard');
     }
 
+public function accountSettings()
+{
+    $user = Auth::user();
+
+    return view('layouts.Customer_view.accountSettings', compact('user'));
+}
 
 
 public function CustomerDashboard(Request $request)

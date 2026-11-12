@@ -44,7 +44,10 @@ class OrderController extends Controller
         $customer = Customer::where('email', Auth::user()->email)->first();
 
         $orders = $customer
-            ? Order::where('customer_id', $customer->id)->latest()->get()
+            ? Order::where('customer_id', $customer->id)
+                ->where('status', '!=', 'Cancelled')
+                ->latest()
+                ->get()
             : collect();
 
         return view('layouts.Customer_view.customerorders', compact('orders'));
@@ -95,11 +98,14 @@ class OrderController extends Controller
     }
 
 
-    public function remove(Order $order)
+public function remove(Order $order)
 {
-    $order->delete();
+    $order->update([
+        'status' => 'Cancelled',
+    ]);
 
-    return redirect()->route('customer.orders')->with('success', 'Order removed.');
+    return redirect()->route('customer.orders')->with('success', 'Order cancelled.');
 }
+
 
 }

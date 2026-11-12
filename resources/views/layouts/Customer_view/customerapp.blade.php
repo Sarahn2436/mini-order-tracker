@@ -110,6 +110,7 @@
                 <a href="{{ route('customer.orders') }}">customer orders</a>
                 <a href="{{ route('customer.dashboard') }}">customer dashboard</a>
                 <a href="{{ route('customer.checkout') }}" class="">Checkout</a>
+                <a href="{{ route('customer.settings') }}" class="">Account settings</a>
             </div>
 
             <!-- nav container-->

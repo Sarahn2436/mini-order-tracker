@@ -10,7 +10,6 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\BasketController;
 use App\Http\Controllers\CustomerCheckoutController;
 
-
 Route::redirect('/', '/customerLogin');
 
 Route::middleware('customerGuest')->group(function () {
@@ -49,6 +48,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/order/add', [OrderController::class, 'add'])->name('order.add');
     Route::get('/customerorders', [OrderController::class, 'index'])->name('customer.orders');
     Route::delete('/order/remove/{order}', [OrderController::class, 'remove'])->name('order.remove');
+    Route::get('/customer-settings', [CustomerAuthController::class, 'accountSettings'])->name('customer.settings');
 });
 
 Route::get('/customer-login', [CustomerAuthController::class, 'login'])->name('login');

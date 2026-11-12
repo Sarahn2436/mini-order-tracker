@@ -23,5 +23,17 @@ class Order extends Model
     {
         return $this->belongsTo(Customer::class);
     }
+
+    public static function refreshStatuses(): void
+{
+    self::where('status', 'New')
+        ->where('created_at', '<=', now()->subMinutes(1))
+        ->update(['status' => 'In production']);
+
+    self::where('status', 'In production')
+        ->where('created_at', '<=', now()->subMinutes(2))
+        ->update(['status' => 'Despatched']);
+}
+
 }
 
