@@ -107,3 +107,31 @@ public function CustomerDashboard(Request $request)
 }
 }
 
+class OrderController extends Controller
+{
+    public function index()
+    {
+        $orders = Order::where('user_id', Auth::id())->latest()->get();
+
+        return view('layouts.Customer_view.customerorders', compact('orders'));
+    }
+
+    public function add(Request $request)
+    {
+        $basket = session()->get('basket', []);
+
+        if (empty($basket)) {
+            return redirect()->route('customer.basket')->with('error', 'Your basket is empty.');
+        }
+
+        Order::create([
+            'user_id' => Auth::id(),
+            'status' => 'pending',
+        ]);
+
+        session()->forget('basket');
+
+        return redirect()->route('customer.orders')->with('success', 'Order placed successfully!');
+    }
+}
+

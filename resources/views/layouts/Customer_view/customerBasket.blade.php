@@ -1,6 +1,6 @@
 @extends('layouts.Customer_view.customerapp')
 
-@section('title', 'Customer orders')
+@section('title', 'Customer basket')
 
 @section('content')
 

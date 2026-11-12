@@ -1,4 +1,4 @@
-# displays detailed profile view for a customer
+<!-- displays detailed profile view for a customer -->
 @extends('layouts.Staff_view.app')
 
 @section('content')

@@ -35,11 +35,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/orders', [OrderController::class, 'showOrders'])->name('orders');
 
-    Route::get('/customers', [CustomerController::class, 'index'])->name('customers.index');
-    Route::get('/customers/create', [CustomerController::class, 'create'])->name('customers.create');
-    Route::get('/customers/{id}', [CustomerController::class, 'show'])->name('customers.show');
-    Route::get('/customers/{id}/edit', [CustomerController::class, 'edit'])->name('customers.edit');
-    Route::delete('/customers/{id}', [CustomerController::class, 'destroy'])->name('customers.destroy');
+    Route::resource('customers', CustomerController::class);
 });
 
 Route::middleware('auth')->group(function () {
@@ -48,15 +44,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/basket/add/{id}', [BasketController::class, 'add'])->name('basket.add');
     Route::delete('/basket/remove/{id}', [BasketController::class, 'remove'])->name('basket.remove');
     Route::post('/customer-logout', [CustomerAuthController::class, 'logout'])->name('customer.logout');
-    Route::get('/product-view/{slug}', [ProductController::class, 'show'])-> name('customer.product');
+    Route::get('/product-view/{slug}', [ProductController::class, 'show'])->name('customer.product');
     Route::get('/customer-checkout', [CustomerCheckoutController::class, 'CustomerCheckout'])->name('customer.checkout');
-
-    Route::get('/customerorders', function () {
-        return view('layouts.Customer_view.customerorders');
-    })->name('customer.orders');
+    Route::post('/order/add', [OrderController::class, 'add'])->name('order.add');
+    Route::get('/customerorders', [OrderController::class, 'index'])->name('customer.orders');
+    Route::delete('/order/remove/{order}', [OrderController::class, 'remove'])->name('order.remove');
 });
 
 Route::get('/customer-login', [CustomerAuthController::class, 'login'])->name('login');
-
-
-?>

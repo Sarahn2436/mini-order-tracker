@@ -131,7 +131,7 @@
                     <input type="checkbox" id="same-as-shipping" name="same_as_shipping" checked>
                     <label for="same-as-shipping">Same as shipping address</label>
                 </div>
-                <!-- This section will be hidden/shown by JS -->
+                <!-- can be hidden or shown -->
                 <div id="billing-address-fieldset" style="display: none;">
                     <div class="form-group"><label for="billing-name">Full Name</label><input type="text" id="billing-name"
                             name="billing_name" autocomplete="name"></div>
@@ -145,7 +145,9 @@
                     </div>
                 </div>
             </fieldset>
-
+        </form>
+        <form class="checkout-form" id="placeOrderForm" action="{{ route('order.add') }}" method="POST">
+            @csrf
             <button type="submit" class="submit-btn">Place Order</button>
         </form>
     </div>
@@ -155,7 +157,7 @@
         const billingAddressFields = document.getElementById('billing-address-fieldset');
 
         if (sameAsShippingCheckbox && billingAddressFields) {
-            // This function will toggle the visibility of the billing address section
+            // toggles billing address
             const toggleBillingAddress = () => {
                 if (sameAsShippingCheckbox.checked) {
                     billingAddressFields.style.display = 'none';
@@ -164,10 +166,9 @@
                 }
             };
 
-            // Listen for changes on the checkbox
             sameAsShippingCheckbox.addEventListener('change', toggleBillingAddress);
 
-            // Run the function on initial page load
+            // runs function when the page loads
             toggleBillingAddress();
         }
     </script>
