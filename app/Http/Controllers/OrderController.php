@@ -100,12 +100,17 @@ class OrderController extends Controller
 
 public function remove(Order $order)
 {
+    if ($order->status === 'Despatched') {
+        return redirect()->route('customer.orders')->with('error', 'Despatched orders cannot be cancelled.');
+    }
+
     $order->update([
         'status' => 'Cancelled',
     ]);
 
     return redirect()->route('customer.orders')->with('success', 'Order cancelled.');
 }
+
 
 
 }

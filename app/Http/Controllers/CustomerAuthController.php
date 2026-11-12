@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Product; 
 use App\Models\Order;
+use App\Models\Customer;
+
 
 class CustomerAuthController extends Controller
 {
@@ -83,10 +85,42 @@ class CustomerAuthController extends Controller
 
 public function accountSettings()
 {
+    /** @var \App\Models\User $user */
     $user = Auth::user();
+    $customer = Customer::where('email', $user->email)->first();
 
-    return view('layouts.Customer_view.accountSettings', compact('user'));
+    return view('layouts.Customer_view.accountSettings', compact('user', 'customer'));
 }
+
+public function updateAccount(Request $request)
+{
+    /** @var \App\Models\User $user */
+    $user = Auth::user();
+    $oldEmail = $user->email;
+
+    $validated = $request->validate([
+        'name'    => ['required', 'string', 'max:255'],
+        'email'   => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . $user->id],
+        'company' => ['nullable', 'string', 'max:255'],
+    ]);
+
+    $user->update([
+        'name'  => $validated['name'],
+        'email' => $validated['email'],
+    ]);
+
+    Customer::updateOrCreate(
+        ['email' => $oldEmail],
+        [
+            'name'    => $validated['name'],
+            'email'   => $validated['email'],
+            'company' => $validated['company'] ?? null,
+        ]
+    );
+
+    return redirect()->route('customer.settings')->with('success', 'Your details have been updated.');
+}
+
 
 
 public function deleteAccount(Request $request)
