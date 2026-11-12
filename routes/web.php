@@ -49,6 +49,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/customerorders', [OrderController::class, 'index'])->name('customer.orders');
     Route::delete('/order/remove/{order}', [OrderController::class, 'remove'])->name('order.remove');
     Route::get('/customer-settings', [CustomerAuthController::class, 'accountSettings'])->name('customer.settings');
+    Route::delete('/customer-settings/delete', [CustomerAuthController::class, 'deleteAccount'])->name('customer.account.delete');
+
 });
 
 Route::get('/customer-login', [CustomerAuthController::class, 'login'])->name('login');

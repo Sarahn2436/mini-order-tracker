@@ -89,6 +89,27 @@ public function accountSettings()
 }
 
 
+public function deleteAccount(Request $request)
+{
+    $request->validate([
+        'password' => ['required', 'current_password'],
+    ]);
+
+    /** @var User $user */
+    $user = Auth::user();
+
+    Auth::logout();
+
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
+
+    $user->delete();
+
+    return redirect('/customerLogin')->with('success', 'Your account has been permanently deleted.');
+}
+
+
+
 public function CustomerDashboard(Request $request)
 {
     $query = Product::query();
