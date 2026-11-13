@@ -9,6 +9,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\BasketController;
 use App\Http\Controllers\CustomerCheckoutController;
+use App\Http\Controllers\ChatController;
 
 Route::redirect('/', '/customerLogin');
 
@@ -55,4 +56,15 @@ Route::middleware('auth')->group(function () {
 
 });
 
+Route::get('/chat/messages/{sessionId}', [ChatController::class, 'getMessages']);
+Route::post('/chat/send', [ChatController::class, 'storeMessage']);
+Route::get('/chat/rooms', [ChatController::class, 'getActiveRooms']);
+
+Route::get('/staff/chats', function () {
+    return view('layouts.Staff_view.chats'); 
+})->middleware('auth')->name('chat');
+
 Route::get('/customer-login', [CustomerAuthController::class, 'login'])->name('login');
+
+Route::post('/stripe/checkout', [CustomerCheckoutController::class, 'add'])->name('stripe.checkout');
+

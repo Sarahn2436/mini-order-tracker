@@ -1,15 +1,16 @@
 <html>
 
-<head <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<head>
+     <script src="https://stripe.com"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'customer app')</title>
     <style>
-        .nav {
+            .nav {
             background-color: #333;
-            overflow: hidden;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap;
+            width: 100%;
         }
 
         .nav-links {
@@ -34,7 +35,6 @@
             color: black;
         }
 
-        /* Search bar styles */
         .search-container {
             padding: 0 16px;
         }
@@ -99,6 +99,142 @@
         body {
             font-family: "Lato", sans-serif;
         }
+
+    .customer-service-container {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: #333;
+        border-radius: 8px;
+        z-index: 1000;
+        font-family: system-ui, -apple-system, sans-serif;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        width: 120px;
+        height: 40px;
+        
+        transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    .minimized-btn {
+        width: 100%;
+        height: 100%;
+        background: transparent;
+        color: white;
+        border: none;
+        font-size: 14px;
+        font-weight: bold;
+        cursor: pointer;
+        outline: none;
+    }
+
+    .chat-expanded-view {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.2s ease;
+    }
+
+    .chat-header {
+        background: #222;
+        color: white;
+        padding: 14px 16px;
+        font-weight: bold;
+        font-size: 14px;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .close-x {
+        color: #aaa;
+        font-size: 16px;
+    }
+    .close-x:hover {
+        color: white;
+    }
+
+    .chat-messages {
+        flex: 1; 
+        background: #2c2c2c;
+        padding: 16px;
+        overflow-y: auto;
+        min-height: 200px;
+    }
+.message {
+    color: white;
+    background: #444;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 14px;
+    max-width: 85%;
+    line-height: 1.4;
+    width: fit-content;
+    overflow-wrap: break-word;
+    word-break: break-word; 
+}
+
+    .chat-bar {
+        background: #222;
+        padding: 10px;
+        display: flex;
+        gap: 8px;
+    }
+    .chat-bar input {
+        flex: 1;
+        padding: 8px 12px;
+        background: #444;
+        border: none;
+        border-radius: 4px;
+        color: white;
+        outline: none;
+    }
+    .chat-bar input::placeholder {
+        color: #aaa;
+    }
+    .send-btn {
+        background: #333;
+        color: white;
+        border: none;
+        padding: 8px 14px;
+        border-radius: 4px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+    .send-btn:hover {
+        background: #333;
+    }
+
+    .customer-service-container.active {
+
+        width: 320px;
+        height: 400px; 
+    }
+
+    .customer-service-container.active .minimized-btn {
+        display: none;
+    }
+    .customer-service-container.active .chat-expanded-view {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .message.user {
+    background: #007bff; 
+    color: white;
+    align-self: flex-end;
+    margin-left: auto;
+    }
+
+.chat-messages {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    }
+
+
     </style>
 </head>
 
@@ -141,7 +277,119 @@
                 </form>
             </div>
         </nav>
-    </header>
+
+<!-- customer service stuff -->
+<div id="chatWindow" class="customer-service-container">
+    
+    <!-- small button -->
+    <button id="chatTrigger" class="minimized-btn" onclick="toggleChat()">Need help?</button>
+
+    <!-- expanded chat -->
+    <div class="chat-expanded-view">
+        
+        <!-- header -->
+        <div class="chat-header" onclick="toggleChat()">
+            <span>Customer Support</span>
+            <span class="close-x">✕</span>
+        </div>
+
+        <!-- conversation history -->
+        <div class="chat-messages">
+            <div class="message bot">Hello! How can we help you today?</div>
+        </div>
+
+        <!-- Input form  chat-bar -->
+        <div class="chat-bar">
+            <input type="text" id="chatInput" placeholder="What's on your mind?" onkeypress="handleKeyPress(event)">
+            <button class="send-btn" onclick="sendMessage()">Send</button>
+        </div>
+
+
+    </div>
+
+</div>
+
+<script>
+    let chatPollInterval = null;
+
+    function toggleChat() {
+        const container = document.getElementById('chatWindow');
+        container.classList.toggle('active');
+        
+        if (container.classList.contains('active')) {
+            setTimeout(() => {
+                document.getElementById('chatInput').focus();
+            }, 300);
+
+            fetchCustomerMessages();
+
+            clearInterval(chatPollInterval);
+            chatPollInterval = setInterval(fetchCustomerMessages, 3000);
+        } else {
+            clearInterval(chatPollInterval);
+        }
+    }
+
+    function fetchCustomerMessages() {
+        const sessionId = "customer_{{ auth()->user()->id ?? 'guest' }}";;
+
+        fetch(`/chat/messages/${sessionId}`)
+            .then(res => res.json())
+            .then(messages => {
+                const messagesContainer = document.querySelector('.chat-messages');
+                messagesContainer.innerHTML = '';
+
+                const defaultMsg = document.createElement('div');
+                defaultMsg.className = 'message bot';
+                defaultMsg.innerText = 'Hello! How can we help you today?';
+                messagesContainer.appendChild(defaultMsg);
+
+                messages.forEach(msg => {
+                    const bubble = document.createElement('div');
+                    
+                    bubble.className = msg.sender_type === 'customer' ? 'message user' : 'message';
+                    bubble.innerText = msg.message;
+                    
+                    messagesContainer.appendChild(bubble);
+                });
+
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            })
+            .catch(error => console.error('Error fetching stream records:', error));
+    }
+
+    function sendMessage() {
+        const inputElement = document.getElementById('chatInput');
+        const messageText = inputElement.value.trim();
+        if (messageText === '') return;
+
+        const sessionId = "customer_{{ auth()->user()->id ?? 'guest' }}"; 
+
+        fetch('/chat/send', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({
+                session_id: sessionId,
+                sender_type: 'customer',
+                message: messageText
+            })
+        })
+        .then(response => response.json())
+        .then(() => {
+            inputElement.value = '';
+            fetchCustomerMessages();
+        });
+    }
+
+    function handleKeyPress(event) {
+        if (event.key === 'Enter') {
+            sendMessage();
+        }
+    }
+</script>
 
     @yield('content')
 </body>
