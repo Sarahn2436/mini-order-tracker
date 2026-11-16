@@ -12,8 +12,10 @@
 
         <h1>All Customers</h1>
 
-        @if (session('success'))
-            <p role="status">{{ session('success') }}</p>
+        @if (session()->has('success'))
+            <p role="status" style="padding: 10px; margin: 12px 0; color: #166534; background: #dcfce7; border: 1px solid #86efac;">
+                {{ session('success') }}
+            </p>
         @endif
 
         <table>
@@ -40,6 +42,12 @@
                             <a href="{{ route('customers.edit', $customer->id) }}">
                                 Edit
                             </a>
+                            <form action="{{ route('customers.destroy', $customer) }}" method="POST" style="display: inline;"
+                                onsubmit="return confirm('Are you sure you want to delete this customer?');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit">Delete</button>
+                            </form>
                         </td>
                     </tr>
                 @endforeach
