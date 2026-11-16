@@ -1,37 +1,39 @@
-<form action="{{ route('customers.update', $customer->id) }}" method="POST">
+@extends('layouts.app')
 
-    @csrf
-    @method('PUT')
+@section('title', 'Edit Customer')
 
-    <fieldset>
-        <legend>Edit Customer</legend>
+@section('content')
+    <h1>Edit Customer</h1>
 
-        <label>Name</label><br>
-        <input type="text" name="name"
-            value="{{ old('name', $customer->name) }}">
-              @error('name')
-                     <p>{{  $message }}</p>
-              @enderror        
-        <br><br>
+    <form action="{{ route('customers.update', $customer) }}" method="POST">
+        @csrf
+        @method('PUT')
 
-        <label>Email</label><br>
-        <input type="email" name="email"
-            value="{{ old('email', $customer->email) }}">
-               @error('email')
-                     <p>{{  $message }}</p>
-              @enderror
-        <br><br>
+        <fieldset>
+            <legend>Customer details</legend>
 
-        <label>Company</label><br>
-        <input type="text" name="company"
-            value="{{ old('company', $customer->company) }}">
-               @error('company')
-                     <p>{{  $message }}</p>
-              @enderror
-        <br><br>
+            <label for="name">Name</label><br>
+            <input id="name" type="text" name="name" value="{{ old('name', $customer->name) }}">
+            @error('name')
+                <p>{{ $message }}</p>
+            @enderror
+            <br><br>
 
-        <button type="submit">Update Customer</button>
+            <label for="email">Email</label><br>
+            <input id="email" type="email" name="email" value="{{ old('email', $customer->email) }}">
+            @error('email')
+                <p>{{ $message }}</p>
+            @enderror
+            <br><br>
 
-    </fieldset>
+            <label for="company">Company</label><br>
+            <input id="company" type="text" name="company" value="{{ old('company', $customer->company) }}">
+            @error('company')
+                <p>{{ $message }}</p>
+            @enderror
+            <br><br>
 
-</form>
+            <button type="submit">Update Customer</button>
+        </fieldset>
+    </form>
+@endsection

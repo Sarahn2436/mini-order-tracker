@@ -1,11 +1,12 @@
 <?php
 
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\OrderController;
 use Illuminate\Support\Facades\Route;
 
-Route::view('/Dashboard', 'Dashboard')->name('Dashboard');
+Route::view('/Dashboard', 'dashboard')->name('dashboard');
 
-Route::view('/Orders', 'Orders')->name('Orders');
+Route::get('/Orders', [OrderController::class, 'index'])->name('orders');
 
 Route::resource('customers', CustomerController::class)
     ->except(['show']);

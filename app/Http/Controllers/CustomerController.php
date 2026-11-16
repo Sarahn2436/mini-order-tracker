@@ -12,7 +12,9 @@ class CustomerController extends Controller
 {
     public function index(): View
     {
-        $customers = Customer::all();
+        $customers = Customer::query()
+            ->orderBy('id')
+            ->get();
 
         return view('customers.index', [
             'customers' => $customers,
