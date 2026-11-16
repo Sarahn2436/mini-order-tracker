@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -10,14 +11,28 @@ use Illuminate\View\View;
 
 class CustomerController extends Controller
 {
-    public function index(): View
+    public function index(Request $request): View
     {
+        $validated = $request->validate([
+            'search' => ['nullable', 'string', 'max:100'],
+        ]);
+
+        $search = trim($validated['search'] ?? '');
+
         $customers = Customer::query()
+            ->when($search !== '', function (Builder $query) use ($search): void {
+                $query->where(function (Builder $customerQuery) use ($search): void {
+                    $customerQuery
+                        ->whereLike('name', "%{$search}%")
+                        ->orWhereLike('company', "%{$search}%");
+                });
+            })
             ->orderBy('id')
             ->get();
 
         return view('customers.index', [
             'customers' => $customers,
+            'search' => $search,
         ]);
     }
 
