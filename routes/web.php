@@ -7,6 +7,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/Dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+Route::get('/Orders/create', [OrderController::class, 'create'])->name('orders.create');
+Route::get('/Orders/{order}/edit', [OrderController::class, 'edit'])->name('orders.edit');
+Route::post('/Orders', [OrderController::class, 'store'])->name('orders.store');
+Route::put('/Orders/{order}', [OrderController::class, 'update'])->name('orders.update');
+Route::delete('/Orders/{order}', [OrderController::class, 'destroy'])->name('orders.destroy');
 Route::get('/Orders', [OrderController::class, 'index'])->name('orders');
 
 Route::resource('customers', CustomerController::class)

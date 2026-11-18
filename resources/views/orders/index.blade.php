@@ -6,7 +6,12 @@
     <div class="page-stack">
         <div class="page-header">
             <h1>Orders</h1>
+            <a class="button button-primary" href="{{ route('orders.create') }}">Add Order</a>
         </div>
+
+        @if (session()->has('success'))
+            <p class="notice-success" role="status">{{ session('success') }}</p>
+        @endif
 
         <section class="surface" aria-label="Order list">
             <div class="surface-body page-stack">
@@ -52,6 +57,7 @@
                                 <th>Status</th>
                                 <th>Due Date</th>
                                 <th>Created</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -65,6 +71,17 @@
                                     <td>{{ $order->status }}</td>
                                     <td>{{ $order->status === 'Order Cancelled' ? 'N/A' : ($order->due_date?->format('M j, Y') ?? 'N/A') }}</td>
                                     <td>{{ $order->created_at?->format('M j, Y') }}</td>
+                                    <td>
+                                        <div class="form-actions">
+                                            <a class="button button-secondary" href="{{ route('orders.edit', $order) }}">Edit</a>
+                                            <form action="{{ route('orders.destroy', $order) }}" method="POST"
+                                                onsubmit="return confirm('Are you sure you want to delete this order?');">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button class="button button-danger" type="submit">Delete</button>
+                                            </form>
+                                        </div>
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>

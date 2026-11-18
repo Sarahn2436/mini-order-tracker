@@ -51,7 +51,7 @@ class CustomerController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:50',
+            'name' => 'required|string|max:25',
             'email' => 'required|email|unique:customers,email',
             'company' => 'nullable|string|max:50',
         ]);
@@ -64,7 +64,7 @@ class CustomerController extends Controller
     public function update(Request $request, Customer $customer): RedirectResponse
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:50',
+            'name' => 'required|string|max:25',
             'email' => [
                 'required',
                 'email',
