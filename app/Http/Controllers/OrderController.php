@@ -9,20 +9,21 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class OrderController extends Controller
 {
+    private const STATUSES = [
+        'New Order',
+        'Order In Production',
+        'Order Dispatched',
+        'Order Cancelled',
+    ];
+
     public function index(Request $request): View
     {
-        $statuses = [
-            'New Order',
-            'Order In Production',
-            'Order Dispatched',
-            'Order Cancelled',
-        ];
-
         $validated = $request->validate([
-            'status' => ['nullable', 'string', Rule::in($statuses)],
+            'status' => ['nullable', 'string', Rule::in(self::STATUSES)],
         ]);
 
         $selectedStatus = $validated['status'] ?? null;
@@ -38,9 +39,72 @@ class OrderController extends Controller
 
         return view('orders.index', [
             'orders' => $orders,
-            'statuses' => $statuses,
+            'statuses' => self::STATUSES,
             'selectedStatus' => $selectedStatus,
         ]);
+    }
+
+    public function export(Request $request): StreamedResponse
+    {
+        $validated = $request->validate([
+            'status' => ['nullable', 'string', Rule::in(self::STATUSES)],
+        ]);
+
+        $selectedStatus = $validated['status'] ?? null;
+        $orders = Order::query()
+            ->with('customer')
+            ->when($selectedStatus, function (Builder $query, string $status): void {
+                $query->where('status', $status);
+            })
+            ->latest()
+            ->orderByDesc('id')
+            ->lazy(500);
+
+        return response()->streamDownload(function () use ($orders): void {
+            $output = fopen('php://output', 'w');
+
+            if ($output === false) {
+                throw new \RuntimeException('Unable to open the CSV output stream.');
+            }
+
+            fwrite($output, "\xEF\xBB\xBF");
+            fputcsv($output, [
+                'Order Number',
+                'Customer',
+                'Product',
+                'Quantity',
+                'Unit Price',
+                'Status',
+                'Due Date',
+                'Created',
+            ], ',', '"', '');
+
+            foreach ($orders as $order) {
+                fputcsv($output, [
+                    $order->order_number,
+                    $this->protectCsvFormula($order->customer?->name ?? ''),
+                    $this->protectCsvFormula($order->product),
+                    $order->quantity,
+                    $order->unit_price,
+                    $order->status,
+                    $order->due_date?->format('Y-m-d') ?? '',
+                    $order->created_at?->format('Y-m-d') ?? '',
+                ], ',', '"', '');
+            }
+
+            fclose($output);
+        }, 'orders.csv', [
+            'Content-Type' => 'text/csv; charset=UTF-8',
+        ]);
+    }
+
+    private function protectCsvFormula(string $value): string
+    {
+        if (preg_match('/^[\x00-\x20]*[=+\-@]/', $value) === 1) {
+            return "'{$value}";
+        }
+
+        return $value;
     }
 
     public function create(): View

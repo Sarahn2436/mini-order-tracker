@@ -6,7 +6,10 @@
     <div class="page-stack">
         <div class="page-header">
             <h1>Orders</h1>
-            <a class="button button-primary" href="{{ route('orders.create') }}">Add Order</a>
+            <div class="form-actions">
+                <a class="button button-secondary" href="{{ route('orders.export', request()->only('status')) }}">Export CSV</a>
+                <a class="button button-primary" href="{{ route('orders.create') }}">Add Order</a>
+            </div>
         </div>
 
         @if (session()->has('success'))
@@ -69,7 +72,9 @@
                                     <td>{{ $order->quantity }}</td>
                                     <td>{{ number_format((float) $order->unit_price, 2) }}</td>
                                     <td>{{ $order->status }}</td>
-                                    <td>{{ $order->status === 'Order Cancelled' ? 'N/A' : ($order->due_date?->format('M j, Y') ?? 'N/A') }}</td>
+                                    <td style="{{ $order->status !== 'Order Cancelled' && $order->due_date?->isBefore(today()) ? 'color: #b91c1c;' : '' }}">
+                                        {{ $order->status === 'Order Cancelled' ? 'N/A' : ($order->due_date?->format('M j, Y') ?? 'N/A') }}
+                                    </td>
                                     <td>{{ $order->created_at?->format('M j, Y') }}</td>
                                     <td>
                                         <div class="form-actions">

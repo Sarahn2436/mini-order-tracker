@@ -6,6 +6,13 @@
       0 => 'Laravel\\Boost\\BoostServiceProvider',
     ),
   ),
+  'laravel/fortify' =>
+  array (
+    'providers' =>
+    array (
+      0 => 'Laravel\\Fortify\\FortifyServiceProvider',
+    ),
+  ),
   'laravel/mcp' => 
   array (
     'aliases' => 
@@ -29,6 +36,13 @@
     'providers' => 
     array (
       0 => 'Laravel\\Pao\\Laravel\\ServiceProvider',
+    ),
+  ),
+  'laravel/passkeys' =>
+  array (
+    'providers' =>
+    array (
+      0 => 'Laravel\\Passkeys\\PasskeysServiceProvider',
     ),
   ),
   'laravel/roster' => 

@@ -46,7 +46,23 @@
             font-size: 17px;
         }
 
-        .nav a:hover {
+        .nav form {
+            display: flex;
+            margin-left: auto;
+        }
+
+        .nav button {
+            border: 0;
+            background: transparent;
+            color: #f2f2f2;
+            padding: 14px 16px;
+            font: inherit;
+            font-size: 17px;
+            cursor: pointer;
+        }
+
+        .nav a:hover,
+        .nav button:hover {
             background-color: #ddd;
             color: black;
         }
@@ -179,6 +195,7 @@
 
         .button:focus-visible,
         .nav a:focus-visible,
+        .nav button:focus-visible,
         .pagination a:focus-visible {
             outline: 3px solid #60a5fa;
             outline-offset: 2px;
@@ -331,9 +348,17 @@
 
     <header class="app-header">
         <nav class="nav" aria-label="Main navigation">
-            <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">Dashboard</a>
-            <a href="{{ route('customers.index') }}" class="{{ request()->routeIs('customers.*') ? 'active' : '' }}">Customers</a>
-            <a href="{{ route('orders') }}" class="{{ request()->routeIs('orders') ? 'active' : '' }}">Orders</a>
+            @auth
+                <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">Dashboard</a>
+                <a href="{{ route('customers.index') }}" class="{{ request()->routeIs('customers.*') ? 'active' : '' }}">Customers</a>
+                <a href="{{ route('orders') }}" class="{{ request()->routeIs('orders*') ? 'active' : '' }}">Orders</a>
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button type="submit">Log Out</button>
+                </form>
+            @else
+                <a href="{{ route('login') }}">Mini Order Tracker</a>
+            @endauth
         </nav>
     </header>
 
