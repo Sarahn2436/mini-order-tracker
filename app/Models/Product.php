@@ -9,5 +9,18 @@ class Product extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'slug', 'description', 'price', 'image'];
+   protected $fillable = [
+    'name',
+    'slug',
+    'description',
+    'price',
+    'image',
+    'category',
+];
+
+public function reviews()
+{
+    return $this->hasMany(Review::class)->latest();
+}
+
 }

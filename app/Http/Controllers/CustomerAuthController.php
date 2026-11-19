@@ -9,7 +9,6 @@ use App\Models\Product;
 use App\Models\Order;
 use App\Models\Customer;
 
-
 class CustomerAuthController extends Controller
 {
     public function showCustomerLogin()
@@ -40,10 +39,9 @@ class CustomerAuthController extends Controller
     }
 
     public function login()
-{
-    return view('layouts.Customer_view.customerLogin.CustomerLogin');
-
-}
+    {
+        return view('layouts.Customer_view.customerLogin.CustomerLogin');
+    }
 
     public function logout(Request $request)
     {
@@ -53,7 +51,6 @@ class CustomerAuthController extends Controller
 
         return redirect('/customerLogin');
     }
-
 
     public function showCustomerRegister()
     {
@@ -83,99 +80,92 @@ class CustomerAuthController extends Controller
         return redirect()->route('customer.dashboard');
     }
 
-public function accountSettings()
-{
-    /** @var \App\Models\User $user */
-    $user = Auth::user();
-    $customer = Customer::where('email', $user->email)->first();
-
-    return view('layouts.Customer_view.accountSettings', compact('user', 'customer'));
-}
-
-public function updateAccount(Request $request)
-{
-    /** @var \App\Models\User $user */
-    $user = Auth::user();
-    $oldEmail = $user->email;
-
-    $validated = $request->validate([
-        'name'    => ['required', 'string', 'max:255'],
-        'email'   => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . $user->id],
-        'company' => ['nullable', 'string', 'max:255'],
-    ]);
-
-    $user->update([
-        'name'  => $validated['name'],
-        'email' => $validated['email'],
-    ]);
-
-    Customer::updateOrCreate(
-        ['email' => $oldEmail],
-        [
-            'name'    => $validated['name'],
-            'email'   => $validated['email'],
-            'company' => $validated['company'] ?? null,
-        ]
-    );
-
-    return redirect()->route('customer.settings')->with('success', 'Your details have been updated.');
-}
-
-
-
-public function deleteAccount(Request $request)
-{
-    $request->validate([
-        'password' => ['required', 'current_password'],
-    ]);
-
-    /** @var User $user */
-    $user = Auth::user();
-
-    Auth::logout();
-
-    $request->session()->invalidate();
-    $request->session()->regenerateToken();
-
-    $user->delete();
-
-    return redirect('/customerLogin')->with('success', 'Your account has been permanently deleted.');
-}
-
-
-
-public function CustomerDashboard(Request $request)
-{
-    $query = Product::query();
-
-    // filtering logic
-    if ($request->has('search') && $request->filled('search')) {
-        $searchTerm = $request->input('search');
-        $query->where('name', 'LIKE', "%{$searchTerm}%");
-    }
-
-    // fetch either filtered or all products
-    $products = $query->get();
-
-    // return the dashboard
-    return view('layouts.Customer_view.CustomerDashboard', compact('products'));
-}
-    public function customerBasket() 
-{
-    $basket = session()->get('basket', []);
-
-    return view('layouts.Customer_view.CustomerBasket', compact('basket'));
-}
-}
-
-class OrderController extends Controller
-{
-    public function index()
+    public function accountSettings()
     {
-        $orders = Order::where('user_id', Auth::id())->latest()->get();
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+        $customer = Customer::where('email', $user->email)->first();
 
-        return view('layouts.Customer_view.customerorders', compact('orders'));
+        return view('layouts.Customer_view.accountSettings', compact('user', 'customer'));
     }
+
+    public function updateAccount(Request $request)
+    {
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+        $oldEmail = $user->email;
+
+        $validated = $request->validate([
+            'name'    => ['required', 'string', 'max:255'],
+            'email'   => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . $user->id],
+            'company' => ['nullable', 'string', 'max:255'],
+        ]);
+
+        $user->update([
+            'name'  => $validated['name'],
+            'email' => $validated['email'],
+        ]);
+
+        Customer::updateOrCreate(
+            ['email' => $oldEmail],
+            [
+                'name'    => $validated['name'],
+                'email'   => $validated['email'],
+                'company' => $validated['company'] ?? null,
+            ]
+        );
+
+        return redirect()->route('customer.settings')->with('success', 'Your details have been updated.');
+    }
+
+    public function deleteAccount(Request $request)
+    {
+        $request->validate([
+            'password' => ['required', 'current_password'],
+        ]);
+
+        /** @var User $user */
+        $user = Auth::user();
+
+        Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        $user->delete();
+
+        return redirect('/customerLogin')->with('success', 'Your account has been permanently deleted.');
+    }
+
+    public function CustomerDashboard(Request $request)
+    {
+        $query = Product::query();
+
+        // Text search filtering logic
+        if ($request->has('search') && $request->filled('search')) {
+            $searchTerm = $request->input('search');
+            $query->where('name', 'LIKE', "%{$searchTerm}%");
+        }
+
+        // Category filtering logic
+        if ($request->has('category') && $request->filled('category')) {
+            $categoryName = $request->input('category');
+            $query->where('category', $categoryName);
+        }
+
+        // fetch products
+        $products = $query->get();
+
+        // return dashboard
+        return view('layouts.Customer_view.CustomerDashboard', compact('products'));
+    }
+
+    public function customerBasket()
+    {
+        $basket = session()->get('basket', []);
+
+        return view('layouts.Customer_view.CustomerBasket', compact('basket'));
+    } 
 
     public function add(Request $request)
     {
@@ -185,14 +175,29 @@ class OrderController extends Controller
             return redirect()->route('customer.basket')->with('error', 'Your basket is empty.');
         }
 
-        Order::create([
+        $order = Order::create([
             'user_id' => Auth::id(),
-            'status' => 'pending',
+            'status'  => 'pending',
         ]);
+
+        foreach ($basket as $id => $details) {
+            \App\Models\OrderItem::create([
+                'order_id'   => $order->id,
+                'product_id' => $id,
+                'quantity'   => $details['quantity'] ?? 1,
+                'price'      => $details['price'], 
+            ]);
+        }
 
         session()->forget('basket');
 
         return redirect()->route('customer.orders')->with('success', 'Order placed successfully!');
     }
-}
 
+    public function index()
+    {
+        $orders = Order::where('user_id', Auth::id())->latest()->get();
+
+        return view('layouts.Customer_view.customerorders', compact('orders'));
+    }
+}

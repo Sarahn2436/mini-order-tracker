@@ -10,6 +10,8 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\BasketController;
 use App\Http\Controllers\CustomerCheckoutController;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\ReviewController;
+use Illuminate\Support\Facades\Schedule;
 
 Route::redirect('/', '/customerLogin');
 
@@ -45,6 +47,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/basket/remove/{id}', [BasketController::class, 'remove'])->name('basket.remove');
     Route::post('/customer-logout', [CustomerAuthController::class, 'logout'])->name('customer.logout');
     Route::get('/product-view/{slug}', [ProductController::class, 'show'])->name('customer.product');
+    Route::post('/product/{product}/review', [ReviewController::class, 'store'])->name('reviews.store')->middleware('auth');
     Route::get('/customer-checkout', [CustomerCheckoutController::class, 'CustomerCheckout'])->name('customer.checkout');
     Route::post('/order/add', [OrderController::class, 'add'])->name('order.add');
     Route::get('/customerorders', [OrderController::class, 'index'])->name('customer.orders');
@@ -67,4 +70,7 @@ Route::get('/staff/chats', function () {
 Route::get('/customer-login', [CustomerAuthController::class, 'login'])->name('login');
 
 Route::post('/stripe/checkout', [CustomerCheckoutController::class, 'add'])->name('stripe.checkout');
+
+Schedule::command('orders:advance-status')->everyMinute();
+
 

@@ -6,26 +6,26 @@ use Illuminate\Http\Request;
 
 class BasketController extends Controller
 {
-    public function add(Request $request, $id)
-    {
-        #finds the product to add
-        $product = Product::findOrFail($id);
+   public function add(Request $request, $id)
+{
+    $product = Product::findOrFail($id);
+    $basket = session()->get('basket', []);
 
-        # gets the basket array
-        $basket = session()->get('basket', []);
-
-        # adds product details to basekt array
+    if (isset($basket[$id])) {
+        $basket[$id]['quantity']++;
+    } else {
         $basket[$id] = [
-            "id" => $product->id,
-            "name" => $product->name,
-            "price" => $product->price
+            "id"       => $product->id,
+            "name"     => $product->name,
+            "price"    => $product->price,
+            "quantity" => 1,
         ];
+    }
 
-        // saves updated array in session
-        session()->put('basket', $basket);
+    session()->put('basket', $basket);
 
-        // takes customer to basket page
-        return redirect()->route('customer.basket')->with('success', 'Product added successfully!');    }
+    return redirect()->route('customer.basket')->with('success', 'Product added to basket!');
+}
 
     public function index()
     {

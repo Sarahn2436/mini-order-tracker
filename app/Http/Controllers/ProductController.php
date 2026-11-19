@@ -5,10 +5,17 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 class ProductController extends Controller
 {
-    public function show($slug)
-    {
-      $product = Product::where('id', $slug)->firstOrFail();
+public function show(Request $request, $id, $slug = null)
+{
+    $identifier = $slug ?? $id;
 
-        return view('layouts.Customer_view.productview', compact('product'));
-    }
+    $product = Product::where('id', $identifier)
+        ->orWhere('slug', $identifier)
+        ->with('reviews.user')
+        ->firstOrFail();
+
+    // Return the view with the correctly populated product data model
+    return view('layouts.Customer_view.ProductView', compact('product'));
+}
+
 }

@@ -3,8 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Pagination\Paginator;
-use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\View;
+use App\Models\Product;
 
 
 
@@ -18,13 +18,11 @@ class AppServiceProvider extends ServiceProvider
         //
     }
 
-    /**
-     * Bootstrap any application services.
-     */
-   public function boot(): void
-{
-    if (str_contains(request()->url(), 'ngrok-free.app')) {
-        URL::forceScheme('https');
+    public function boot(): void
+    {
+        View::composer('*', function ($view) {
+            $view->with('productNames', Product::pluck('name')->toArray());
+        });
     }
 }
-}
+

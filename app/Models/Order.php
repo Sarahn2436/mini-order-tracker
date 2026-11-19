@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Models\Product;
 
 class Order extends Model
 {
@@ -33,6 +34,12 @@ class Order extends Model
     self::where('status', 'In production')
         ->where('created_at', '<=', now()->subMinutes(2))
         ->update(['status' => 'Despatched']);
+}
+
+public function products()
+{
+    // If you have a pivot table named 'order_product' or 'order_items':
+    return $this->belongsToMany(Product::class);
 }
 
 }

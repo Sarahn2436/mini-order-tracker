@@ -4,8 +4,8 @@
      <script src="https://stripe.com"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'customer app')</title>
-    <style>
-            .nav {
+        <style>
+        .nav {
             background-color: #333;
             display: flex;
             justify-content: space-between;
@@ -64,6 +64,7 @@
             border: none;
             border-radius: 4px 0 0 4px;
             outline: none;
+            color: #1b1b1b; /* Avoid text color inheritance issues */
         }
 
         .search-container button {
@@ -73,10 +74,41 @@
             border: none;
             cursor: pointer;
             border-radius: 0 4px 4px 0;
+            color: #1b1b1b;
         }
 
         .search-container button:hover {
             background: #ccc;
+        }
+
+        .autocomplete {
+            position: relative;
+            display: inline-block;
+        }
+
+        .autocomplete-items {
+            position: absolute;
+            border: 1px solid #d4d4d4;
+            border-bottom: none;
+            border-top: none;
+            z-index: 99;
+            top: 100%;
+            left: 0;
+            right: 0;
+        }
+        .autocomplete-items div {
+            padding: 10px;
+            cursor: pointer;
+            background-color: #fff;
+            border-bottom: 1px solid #d4d4d4;
+            color: #1b1b1b; /* FIX: Force dark text on white autocomplete dropdown entries */
+        }
+        .autocomplete-items div:hover {
+            background-color: #e9e9e9;
+        }
+        .autocomplete-active {
+            background-color: DodgerBlue !important;
+            color: #ffffff !important;
         }
 
         .logout-btn {
@@ -100,142 +132,137 @@
             font-family: "Lato", sans-serif;
         }
 
-    .customer-service-container {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        background: #333;
-        border-radius: 8px;
-        z-index: 1000;
-        font-family: system-ui, -apple-system, sans-serif;
-        overflow: hidden;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        width: 120px;
-        height: 40px;
-        
-        transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
-    }
+        .customer-service-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #333;
+            border-radius: 8px;
+            z-index: 1000;
+            font-family: system-ui, -apple-system, sans-serif;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            width: 120px;
+            height: 40px;
+            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+        }
 
-    .minimized-btn {
-        width: 100%;
-        height: 100%;
-        background: transparent;
-        color: white;
-        border: none;
-        font-size: 14px;
-        font-weight: bold;
-        cursor: pointer;
-        outline: none;
-    }
+        .minimized-btn {
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            color: white;
+            border: none;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            outline: none;
+        }
 
-    .chat-expanded-view {
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-        opacity: 0;
-        visibility: hidden;
-        transition: opacity 0.2s ease;
-    }
+        .chat-expanded-view {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s ease;
+        }
 
-    .chat-header {
-        background: #222;
-        color: white;
-        padding: 14px 16px;
-        font-weight: bold;
-        font-size: 14px;
-        cursor: pointer;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-    .close-x {
-        color: #aaa;
-        font-size: 16px;
-    }
-    .close-x:hover {
-        color: white;
-    }
+        .chat-header {
+            background: #222;
+            color: white;
+            padding: 14px 16px;
+            font-weight: bold;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .close-x {
+            color: #aaa;
+            font-size: 16px;
+        }
+        .close-x:hover {
+            color: white;
+        }
 
-    .chat-messages {
-        flex: 1; 
-        background: #2c2c2c;
-        padding: 16px;
-        overflow-y: auto;
-        min-height: 200px;
-    }
-.message {
-    color: white;
-    background: #444;
-    padding: 8px 12px;
-    border-radius: 6px;
-    font-size: 14px;
-    max-width: 85%;
-    line-height: 1.4;
-    width: fit-content;
-    overflow-wrap: break-word;
-    word-break: break-word; 
-}
+        .chat-messages {
+            flex: 1; 
+            background: #2c2c2c;
+            padding: 16px;
+            overflow-y: auto;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .message {
+            color: white;
+            background: #444;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            max-width: 85%;
+            line-height: 1.4;
+            width: fit-content;
+            overflow-wrap: break-word;
+            word-break: break-word; 
+        }
 
-    .chat-bar {
-        background: #222;
-        padding: 10px;
-        display: flex;
-        gap: 8px;
-    }
-    .chat-bar input {
-        flex: 1;
-        padding: 8px 12px;
-        background: #444;
-        border: none;
-        border-radius: 4px;
-        color: white;
-        outline: none;
-    }
-    .chat-bar input::placeholder {
-        color: #aaa;
-    }
-    .send-btn {
-        background: #333;
-        color: white;
-        border: none;
-        padding: 8px 14px;
-        border-radius: 4px;
-        font-weight: bold;
-        cursor: pointer;
-    }
-    .send-btn:hover {
-        background: #333;
-    }
+        .chat-bar {
+            background: #222;
+            padding: 10px;
+            display: flex;
+            gap: 8px;
+        }
+        .chat-bar input {
+            flex: 1;
+            padding: 8px 12px;
+            background: #444;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            outline: none;
+        }
+        .chat-bar input::placeholder {
+            color: #aaa;
+        }
+        .send-btn {
+            background: #333;
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+        .send-btn:hover {
+            background: #555;
+        }
 
-    .customer-service-container.active {
+        .customer-service-container.active {
+            width: 320px;
+            height: 400px; 
+        }
 
-        width: 320px;
-        height: 400px; 
-    }
+        .customer-service-container.active .minimized-btn {
+            display: none;
+        }
+        .customer-service-container.active .chat-expanded-view {
+            opacity: 1;
+            visibility: visible;
+        }
 
-    .customer-service-container.active .minimized-btn {
-        display: none;
-    }
-    .customer-service-container.active .chat-expanded-view {
-        opacity: 1;
-        visibility: visible;
-    }
-
-    .message.user {
-    background: #007bff; 
-    color: white;
-    align-self: flex-end;
-    margin-left: auto;
-    }
-
-.chat-messages {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    }
-
-
+        .message.user {
+            background: #007bff; 
+            color: white;
+            align-self: flex-end;
+            margin-left: auto;
+        }
     </style>
+
 </head>
 
 <body class="bg-[#FDFDFC] dark:bg-[#0a0a0a] text-[#1b1b1b] flex flex-col min-h-screen">
@@ -262,12 +289,120 @@
 
                 <!-- Search bar -->
                 <div class="search-container" style="padding: 0;">
-                    <form action="{{ route('customer.dashboard') }}" method="GET">
-                        <input type="text" placeholder="Search..." name="search" value="{{ request('search') }}">
-                        <button type="submit">Go</button>
-                    </form>
+                    <form autocomplete="off" action="{{ route('customer.dashboard') }}" method="GET" style="display: flex; align-items: center; margin: 0;">
+                    @if(request('category'))
+                        <input type="hidden" name="category" value="{{ request('category') }}">
+                    @endif
+
+                    <div class="autocomplete" style="position: relative; display: inline-block;">
+                        <input id="myInput" type="text" placeholder="Search..." name="search" value="{{ request('search') }}">
+                    </div>
+                    <button type="submit">Go</button>
+                </form>
+
                 </div>
 
+                <script>
+                var products = @json($productNames ?? []); 
+
+                console.log("Autocomplete names loaded:", products);
+
+                function autocomplete(inp, arr) {
+                    var currentFocus;
+                    
+                    inp.addEventListener("input", function(e) {
+                    var a, b, i, val = this.value;
+                    closeAllLists();
+                    if (!val) { return false; }
+                    currentFocus = -1;
+                    
+                    a = document.createElement("DIV");
+                    a.setAttribute("id", this.id + "autocomplete-list");
+                    a.setAttribute("class", "autocomplete-items");
+                    
+                    this.parentNode.appendChild(a);
+                    
+                    var resultsCount = 0; 
+                    var maxResults = 5;
+                    
+                    for (i = 0; i < arr.length; i++) {
+                    var matchIndex = arr[i].toUpperCase().indexOf(val.toUpperCase());
+                    if (matchIndex > -1) {
+                        
+                        if (resultsCount >= maxResults) {
+                            break;
+                        }
+                        
+                        b = document.createElement("DIV");
+                        b.innerHTML = arr[i].substr(0, matchIndex);
+                        b.innerHTML += "<strong>" + arr[i].substr(matchIndex, val.length) + "</strong>";
+                        b.innerHTML += arr[i].substr(matchIndex + val.length);
+                        b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+                        
+                       b.addEventListener("click", function(e) {
+                        inp.value = this.getElementsByTagName("input")[0].value;
+                        
+                        closeAllLists();
+
+                        inp.form.submit(); 
+                        });
+                        a.appendChild(b);
+                        
+                        resultsCount++; 
+                    }
+                    }
+                });
+
+                    inp.addEventListener("keydown", function(e) {
+                        var x = document.getElementById(this.id + "autocomplete-list");
+                        if (x) x = x.getElementsByTagName("div");
+                        if (e.keyCode == 40) {
+                        currentFocus++;
+                        addActive(x);
+                        } else if (e.keyCode == 38) {
+                        currentFocus--;
+                        addActive(x);
+                        } else if (e.keyCode == 13) {
+                        if (currentFocus > -1) {
+                            e.preventDefault(); 
+                            if (x) x[currentFocus].click();
+                        }
+                        }
+                    });
+
+                    function addActive(x) {
+                    if (!x) return false;
+                    removeActive(x);
+                    if (currentFocus >= x.length) currentFocus = 0;
+                    if (currentFocus < 0) currentFocus = (x.length - 1);
+                    x[currentFocus].classList.add("autocomplete-active");
+                    }
+
+                    function removeActive(x) {
+                    for (var i = 0; i < x.length; i++) {
+                        x[i].classList.remove("autocomplete-active");
+                    }
+                    }
+
+                    function closeAllLists(elmnt) {
+                    var x = document.getElementsByClassName("autocomplete-items");
+                    for (var i = 0; i < x.length; i++) {
+                        if (elmnt != x[i] && elmnt != inp) {
+                        x[i].parentNode.removeChild(x[i]);
+                        }
+                    }
+                    }
+
+                    document.addEventListener("click", function (e) {
+                        closeAllLists(e.target);
+                    });
+                }
+
+                autocomplete(document.getElementById("myInput"), products); 
+                </script>
+
+
+                
                 <!--logout-->
                 <form action="{{ route('customer.logout') }}" method="POST" style="margin: 0;">
                     @csrf

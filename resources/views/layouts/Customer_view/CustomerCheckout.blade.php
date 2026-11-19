@@ -3,6 +3,7 @@
 @section('title', 'Customer orders')
 
 @section('content')
+
 <style>
     .checkout-container {
         max-width: 600px;
@@ -106,7 +107,7 @@
             </div>
         </fieldset>
 
-        <<fieldset>
+        <fieldset>
     <legend>Payment Details</legend>
     <div class="form-group">
         <label for="card-name">Name on Card</label>
@@ -152,7 +153,8 @@
     </form>
 </div>
 
-<script src="https://stripe.com"></script>
+<script src="https://js.stripe.com/v3/"></script>
+
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -161,7 +163,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
     }
 
-    const stripe = Stripe('pk_test_51UbFrzJWQyE8e8xEzcss17tDfCwwmp2J8ID9PrRYt9LGDzlXkhz0EIyO2njfaqGWZdRXmOuFLP8OJiRT7GxJCqcQ00YaxlvdMK'); 
+    const stripe = Stripe("{{ env('STRIPE_KEY') }}"); 
     const elements = stripe.elements();
 
     const elementStyles = {
@@ -219,7 +221,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 'X-CSRF-TOKEN': csrfToken 
             },
             body: JSON.stringify({
-                // Match the variable names expected by your modern controller backend
                 payment_method_id: paymentMethod.id,
                 shipping_name: document.getElementById('shipping-name').value,
                 shipping_address: document.getElementById('shipping-address').value,
@@ -230,7 +231,7 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(response => response.json())
         .then(data => {
             if(data.success) {
-                window.location.href = "/order-success";
+                window.location.href = "{{ route('customer.orders') }}";
             } else {
                 document.getElementById('card-errors').textContent = data.error;
                 document.getElementById('submitBtn').disabled = false;
