@@ -169,7 +169,9 @@
         </div> 
 
         <!-- Shop items grid heading --> 
-        <p style="font-size: 30px; font-weight: bold; text-align: center; margin: 40px 0 20px 0;">example text</p> 
+        <p style="font-size: 30px; font-weight: bold; text-align: center; margin: 40px 0 20px 0;">
+            {{ request('category') ? request('category') : 'Dashboard' }}
+        </p>
 
         <!-- Grid Container --> 
         <div class="category-grid-container" style=" display: grid !important; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)) !important; gap: 20px !important; box-sizing: border-box !important; "> 
