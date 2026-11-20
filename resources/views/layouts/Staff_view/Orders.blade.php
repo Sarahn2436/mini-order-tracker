@@ -37,11 +37,9 @@
                 @forelse($orders as $order)
                     <tr>
                         <td><strong>{{ $order->order_number }}</strong></td>
-                        <td><a
-                                href="{{ route('customers.show', $order->customer_id) }}">{{ $order->customer->name ?? 'N/A' }}</a>
+                        <td><a href="{{ route('customers.show', $order->customer_id) }}">{{ $order->customer->name ?? 'N/A' }}</a>
                         </td>
-                        <td>{{ $order->product }}</td>
-                        <td>{{ $order->quantity }}</td>
+                        <td>{!! preg_replace('/(\(x\d+\))/', '<span style="color: red;">$1</span>', e($order->product)) !!}</td>
                         <td>${{ number_format($order->unit_price, 2) }}</td>
                         <td>{{ $order->status }}</td>
                         <td>{{ $order->due_date }}</td>
