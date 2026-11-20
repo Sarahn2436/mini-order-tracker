@@ -57,23 +57,28 @@ class CustomerController extends Controller
 
 public function update(Request $request, Customer $customer): RedirectResponse
 {
+    $user = \App\Models\User::where('id', $customer->user_id)
+        ->orWhere('email', $customer->email)
+        ->first();
+
     $validated = $request->validate([
         'name'    => 'required|string|max:255',
         'email'   => [
             'required',
             'email',
             'unique:customers,email,' . $customer->id,
-            // make sure every email is unique
-            \Illuminate\Validation\Rule::unique('users', 'email')->ignore($customer->user_id),
+            \Illuminate\Validation\Rule::unique('users', 'email')->ignore($user?->id),
         ],
         'company' => 'nullable|string|max:255',
     ]);
 
-    $customer->update($validated);
+    $customer->update([
+        ...$validated,
+        'user_id' => $user?->id ?? $customer->user_id,
+    ]);
 
-    // sync changes to user's account
-    if ($customer->user_id) {
-        \App\Models\User::where('id', $customer->user_id)->update([
+    if ($user) {
+        $user->update([
             'name'  => $validated['name'],
             'email' => $validated['email'],
         ]);
@@ -81,6 +86,7 @@ public function update(Request $request, Customer $customer): RedirectResponse
 
     return redirect()->route('customers.index')->with('success', 'Customer updated successfully.');
 }
+
 
     public function destroy(Customer $customer): RedirectResponse
     {

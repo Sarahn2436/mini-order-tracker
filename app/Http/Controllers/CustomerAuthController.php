@@ -94,41 +94,42 @@ public function accountSettings()
 
 public function updateAccount(Request $request)
 {
-    /** @var \App\Models\User $user */
-    $user = Auth::user();
-    $oldEmail = $user->email;
+    // 1. Find the linked user (via user_id or matching current email)
+    $user = User::where('id', $customer->user_id)
+                ->orWhere('email', $customer->email)
+                ->first();
 
+    // 2. Validate against both tables properly
     $validated = $request->validate([
         'name'    => ['required', 'string', 'max:255'],
-        'email'   => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . $user->id],
+        'email'   => [
+            'required',
+            'string',
+            'email',
+            'max:255',
+            // Ignore this user's ID in the users table (if a user record exists)
+            Rule::unique('users', 'email')->ignore($user?->id),
+            // Also ignore this customer's ID in the customers table
+            Rule::unique('customers', 'email')->ignore($customer->id),
+        ],
         'company' => ['nullable', 'string', 'max:255'],
     ]);
 
-    $user->update([
-        'name'  => $validated['name'],
-        'email' => $validated['email'],
-    ]);
-
-    # if user has no id, falls back to emial
-    $customer = Customer::where('user_id', $user->id)
-        ->orWhere('email', $oldEmail)
-        ->first();
-
-    if ($customer) {
-        $customer->update([
-            'user_id' => $user->id,
-            'name'    => $validated['name'],
-            'email'   => $validated['email'],
-            'company' => $validated['company'] ?? null,
-        ]);
-    } else {
-        Customer::create([
-            'user_id' => $user->id,
-            'name'    => $validated['name'],
-            'email'   => $validated['email'],
-            'company' => $validated['company'] ?? null,
+    // 3. Update User if they exist
+    if ($user) {
+        $user->update([
+            'name'  => $validated['name'],
+            'email' => $validated['email'],
         ]);
     }
+
+    // 4. Update Customer
+    $customer->update([
+        'user_id' => $user?->id,
+        'name'    => $validated['name'],
+        'email'   => $validated['email'],
+        'company' => $validated['company'] ?? null,
+    ]);
 
     return redirect()->route('customer.settings')->with('success', 'Your details have been updated.');
 }
