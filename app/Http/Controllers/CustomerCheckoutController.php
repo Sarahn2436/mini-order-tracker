@@ -80,7 +80,9 @@ class CustomerCheckoutController extends Controller
                 'shipping_zip' => $request->input('shipping_zip'), 
                 'amount_cents' => $amountInCents,
                 'stripe_payment_id'=> $paymentIntent->id, 
-                'status' => 'New' 
+                'status' => 'New',
+                'due_date' => now()->addDays(7)->toDateString(),
+
             ]); 
 
             session()->forget('basket');
