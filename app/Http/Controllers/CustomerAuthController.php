@@ -80,43 +80,58 @@ class CustomerAuthController extends Controller
         return redirect()->route('customer.dashboard');
     }
 
-    public function accountSettings()
-    {
-        /** @var \App\Models\User $user */
-        $user = Auth::user();
-        $customer = Customer::where('email', $user->email)->first();
+public function accountSettings()
+{
+    /** @var \App\Models\User $user */
+    $user = Auth::user();
 
-        return view('layouts.Customer_view.accountSettings', compact('user', 'customer'));
+    $customer = Customer::where('user_id', $user->id)
+        ->orWhere('email', $user->email)
+        ->first();
+
+    return view('layouts.Customer_view.accountSettings', compact('user', 'customer'));
+}
+
+public function updateAccount(Request $request)
+{
+    /** @var \App\Models\User $user */
+    $user = Auth::user();
+    $oldEmail = $user->email;
+
+    $validated = $request->validate([
+        'name'    => ['required', 'string', 'max:255'],
+        'email'   => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . $user->id],
+        'company' => ['nullable', 'string', 'max:255'],
+    ]);
+
+    $user->update([
+        'name'  => $validated['name'],
+        'email' => $validated['email'],
+    ]);
+
+    # if user has no id, falls back to emial
+    $customer = Customer::where('user_id', $user->id)
+        ->orWhere('email', $oldEmail)
+        ->first();
+
+    if ($customer) {
+        $customer->update([
+            'user_id' => $user->id,
+            'name'    => $validated['name'],
+            'email'   => $validated['email'],
+            'company' => $validated['company'] ?? null,
+        ]);
+    } else {
+        Customer::create([
+            'user_id' => $user->id,
+            'name'    => $validated['name'],
+            'email'   => $validated['email'],
+            'company' => $validated['company'] ?? null,
+        ]);
     }
 
-    public function updateAccount(Request $request)
-    {
-        /** @var \App\Models\User $user */
-        $user = Auth::user();
-        $oldEmail = $user->email;
-
-        $validated = $request->validate([
-            'name'    => ['required', 'string', 'max:255'],
-            'email'   => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . $user->id],
-            'company' => ['nullable', 'string', 'max:255'],
-        ]);
-
-        $user->update([
-            'name'  => $validated['name'],
-            'email' => $validated['email'],
-        ]);
-
-        Customer::updateOrCreate(
-            ['email' => $oldEmail],
-            [
-                'name'    => $validated['name'],
-                'email'   => $validated['email'],
-                'company' => $validated['company'] ?? null,
-            ]
-        );
-
-        return redirect()->route('customer.settings')->with('success', 'Your details have been updated.');
-    }
+    return redirect()->route('customer.settings')->with('success', 'Your details have been updated.');
+}
 
     public function deleteAccount(Request $request)
     {

@@ -21,3 +21,6 @@ class AdvanceOrderStatuses extends Command
             ->update(['status' => 'Despatched']);
     }
 }
+
+// php artisan schedule:work starts it running
+// php artisan schedule:list let's you check how long til next update

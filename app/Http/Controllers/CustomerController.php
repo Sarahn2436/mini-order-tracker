@@ -55,18 +55,32 @@ class CustomerController extends Controller
         return view('layouts.Staff_view.customers.edit', compact('customer'));
     }
 
-    public function update(Request $request, Customer $customer): RedirectResponse
-    {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:customers,email,' . $customer->id,
-            'company' => 'nullable|string|max:255',
+public function update(Request $request, Customer $customer): RedirectResponse
+{
+    $validated = $request->validate([
+        'name'    => 'required|string|max:255',
+        'email'   => [
+            'required',
+            'email',
+            'unique:customers,email,' . $customer->id,
+            // make sure every email is unique
+            \Illuminate\Validation\Rule::unique('users', 'email')->ignore($customer->user_id),
+        ],
+        'company' => 'nullable|string|max:255',
+    ]);
+
+    $customer->update($validated);
+
+    // sync changes to user's account
+    if ($customer->user_id) {
+        \App\Models\User::where('id', $customer->user_id)->update([
+            'name'  => $validated['name'],
+            'email' => $validated['email'],
         ]);
-
-        $customer->update($validated);
-
-        return redirect()->route('customers.index')->with('success', 'Customer updated successfully!');
     }
+
+    return redirect()->route('customers.index')->with('success', 'Customer updated successfully.');
+}
 
     public function destroy(Customer $customer): RedirectResponse
     {
