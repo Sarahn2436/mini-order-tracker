@@ -4,10 +4,8 @@
 
 @section('content')
 <style>
-    /* Scope styles to a wrapper instead of body so the navbar stays at the top */
     .chat-support-wrapper {
         display: flex;
-        /* Adjust 60px below to match the exact height of your top navbar */
         height: calc(100vh - 60px); 
         width: 100%;
         font-family: system-ui, -apple-system, sans-serif;
