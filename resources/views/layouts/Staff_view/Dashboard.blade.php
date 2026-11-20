@@ -13,7 +13,7 @@
             <thead>
                 <tr style="background-color: #f2f2f2; font-size: 0.9em; text-transform: uppercase;">
                     <th style="width: 33.33%;">Orders created today</th>
-                    <th style="width: 33.33%;">Total Value of orders</th>
+                    <th style="width: 33.33%;">Total Value of upcoming orders</th>
                     <th style="width: 33.33%;">Orders by status</th>
                 </tr>
             </thead>
