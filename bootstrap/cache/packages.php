@@ -6,9 +6,9 @@
       0 => 'Laravel\\Boost\\BoostServiceProvider',
     ),
   ),
-  'laravel/fortify' =>
+  'laravel/fortify' => 
   array (
-    'providers' =>
+    'providers' => 
     array (
       0 => 'Laravel\\Fortify\\FortifyServiceProvider',
     ),
@@ -38,9 +38,9 @@
       0 => 'Laravel\\Pao\\Laravel\\ServiceProvider',
     ),
   ),
-  'laravel/passkeys' =>
+  'laravel/passkeys' => 
   array (
-    'providers' =>
+    'providers' => 
     array (
       0 => 'Laravel\\Passkeys\\PasskeysServiceProvider',
     ),

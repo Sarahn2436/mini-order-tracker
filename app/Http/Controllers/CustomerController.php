@@ -30,8 +30,16 @@ class CustomerController extends Controller
             ->orderBy('id')
             ->get();
 
+        $customerSuggestions = Customer::query()
+            ->orderBy('name')
+            ->get(['name', 'company'])
+            ->flatMap(static fn (Customer $customer): array => array_filter([$customer->name, $customer->company]))
+            ->unique()
+            ->values();
+
         return view('customers.index', [
             'customers' => $customers,
+            'customerSuggestions' => $customerSuggestions,
             'search' => $search,
         ]);
     }
