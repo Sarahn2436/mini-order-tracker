@@ -13,10 +13,10 @@
                 @csrf
 
                 <div class="form-field">
-                    <label for="name">Name</label>
-                    <input class="form-control" id="name" name="name" type="text" value="{{ old('name') }}"
-                        autocomplete="name" required autofocus>
-                    @error('name')
+                    <label for="username">Username</label>
+                    <input class="form-control" id="username" name="username" type="text" value="{{ old('username') }}"
+                        autocomplete="username" required autofocus>
+                    @error('username')
                         <p class="field-error">{{ $message }}</p>
                     @enderror
                 </div>

@@ -84,6 +84,9 @@
         @if (session()->has('success'))
             <p class="notice-success" role="status">{{ session('success') }}</p>
         @endif
+        @if (session()->has('error'))
+            <p class="field-error" role="alert">{{ session('error') }}</p>
+        @endif
 
         <section class="surface" aria-label="Customer list">
             <div class="surface-body">
@@ -138,7 +141,8 @@
                                         <div class="form-actions">
                                             <a class="button button-secondary" href="{{ route('customers.edit', $customer) }}">Edit</a>
                                             <form action="{{ route('customers.destroy', $customer) }}" method="POST"
-                                                onsubmit="return confirm('Are you sure you want to delete this customer?');">
+                                                data-customer-delete-form data-customer-name="{{ $customer->name }}"
+                                                data-outstanding-orders="{{ $customer->outstanding_orders_count }}">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button class="button button-danger" type="submit">Delete</button>
@@ -155,6 +159,23 @@
     </div>
 
     <script>
+        document.querySelectorAll('[data-customer-delete-form]').forEach((deleteForm) => {
+            deleteForm.addEventListener('submit', (event) => {
+                const outstandingOrders = Number(deleteForm.dataset.outstandingOrders);
+
+                if (outstandingOrders > 0) {
+                    event.preventDefault();
+                    window.alert(`${deleteForm.dataset.customerName} has outstanding orders and cannot be deleted.`);
+
+                    return;
+                }
+
+                if (!window.confirm('Are you sure you want to delete this customer?')) {
+                    event.preventDefault();
+                }
+            });
+        });
+
         const customerSearch = document.querySelector('[data-customer-search]');
 
         if (customerSearch) {

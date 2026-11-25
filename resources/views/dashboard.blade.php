@@ -23,7 +23,7 @@
     <div class="page-stack">
         <div class="page-header">
             <div>
-                <h1>Dashboard</h1>
+                <h1>Welcome Back, {{ auth()->user()->username === auth()->user()->email ? auth()->user()->name : auth()->user()->username }}</h1>
                 <p class="empty-state">A summary of your current orders.</p>
             </div>
         </div>

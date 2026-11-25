@@ -20,6 +20,11 @@ class CustomerController extends Controller
         $search = trim($validated['search'] ?? '');
 
         $customers = Customer::query()
+            ->withCount([
+                'orders as outstanding_orders_count' => function (Builder $query): void {
+                    $query->where('status', '!=', 'Order Cancelled');
+                },
+            ])
             ->when($search !== '', function (Builder $query) use ($search): void {
                 $query->where(function (Builder $customerQuery) use ($search): void {
                     $customerQuery
@@ -88,6 +93,14 @@ class CustomerController extends Controller
 
     public function destroy(Customer $customer): RedirectResponse
     {
+        $hasOutstandingOrders = $customer->orders()
+            ->where('status', '!=', 'Order Cancelled')
+            ->exists();
+
+        if ($hasOutstandingOrders) {
+            return back()->with('error', 'This customer has outstanding orders and cannot be deleted.');
+        }
+
         $customer->delete();
 
         return redirect()->route('customers.index')->with('success', 'Customer deleted successfully.');
