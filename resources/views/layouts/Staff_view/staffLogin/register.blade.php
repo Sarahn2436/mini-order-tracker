@@ -71,7 +71,7 @@
 <body>
 
     <div class="register-card">
-        <h2 style="margin-top:0; margin-bottom:20px; text-align:center;">Create Account</h2>
+        <h2 style="margin-top:0; margin-bottom:20px; text-align:center;">{{ __("Create Account") }}</h2>
 
         @if ($errors->any())
             <div class="error-message">
@@ -83,31 +83,30 @@
             @csrf
 
             <div class="form-group">
-                <label for="name">Full Name</label>
+                <label for="name">{{ __("Full Name") }}</label>
                 <input type="text" id="name" name="name" value="{{ old('name') }}" required autofocus>
             </div>
 
             <div class="form-group">
-                <label for="email">Email Address</label>
+                <label for="email">{{ __("Email Address") }}</label>
                 <input type="email" id="email" name="email" value="{{ old('email') }}" required>
             </div>
 
             <div class="form-group">
-                <label for="password">Password</label>
+                <label for="password">{{ __("Password") }}</label>
                 <input type="password" id="password" name="password" required>
             </div>
 
             <div class="form-group">
-                <label for="password_confirmation">Confirm Password</label>
+                <label for="password_confirmation">{{ __("Confirm Password") }}</label>
                 <input type="password" id="password_confirmation" name="password_confirmation" required>
             </div>
 
-            <button type="submit" class="btn-submit">Sign Up</button>
+            <button type="submit" class="btn-submit">{{ __("Sign Up") }}</button>
         </form>
 
         <p style="text-align: center; margin-top: 20px; font-size: 14px;">
-            Already have an account? <a href="{{ route('staff.login') }}" style="color: #333; font-weight: bold;">log
-                in</a>
+            {{ __("Already have an account?") }} <a href="{{ route('staff.login') }}" style="color: #333; font-weight: bold;">{{ __("log in") }}</a>
         </p>
     </div>
 

@@ -173,7 +173,7 @@ var initStripe = function initStripe(maybeStripe, args, startTime) {
     throw new Error("Expected publishable key to be of type string, got type ".concat(_typeof(pk), " instead."));
   }
 
-  var isTestKey = pk.match(/^pk_test/); // @ts-expect-error this is not publicly typed
+  var isTestKey = pk.match(/^pk_test/);
 
   var version = runtimeVersionToUrlVersion(maybeStripe.version);
   var expectedVersion = RELEASE_TRAIN;
@@ -185,7 +185,7 @@ var initStripe = function initStripe(maybeStripe, args, startTime) {
   var stripe = maybeStripe.apply(undefined, args);
   registerWrapper(stripe, startTime);
   return stripe;
-}; // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+};
 
 var validateLoadParams = function validateLoadParams(params) {
   var errorMessage = "invalid load parameters; expected object of shape\n\n    {advancedFraudSignals: boolean}\n\nbut received\n\n    ".concat(JSON.stringify(params), "\n");
@@ -216,7 +216,7 @@ var loadStripe = function loadStripe() {
 };
 
 loadStripe.setLoadParameters = function (params) {
-  // won't throw an error if setLoadParameters is called with the same values as before
+  // wont throw an error if setLoadParameters is called with the same values as before
   if (loadStripeCalled && loadParams) {
     var validatedParams = validateLoadParams(params);
     var parameterKeys = Object.keys(validatedParams);

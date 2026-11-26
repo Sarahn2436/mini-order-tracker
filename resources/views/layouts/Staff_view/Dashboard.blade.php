@@ -2,7 +2,7 @@
 @extends('layouts.Staff_view.app')
 
 
-@section('title', 'Dashboard Summary')
+@section('title', __("Dashboard Summary"))
 
 @section('content')
     <div class="container">
@@ -12,9 +12,9 @@
             style="width:100%; border-collapse: collapse; margin-bottom: 40px; border-color: black;">
             <thead>
                 <tr style="background-color: #f2f2f2; font-size: 0.9em; text-transform: uppercase;">
-                    <th style="width: 33.33%;">Orders created today</th>
-                    <th style="width: 33.33%;">Total Value of upcoming orders</th>
-                    <th style="width: 33.33%;">Orders by status</th>
+                    <th style="width: 33.33%;">{{ __("Orders created today") }}</th>
+                    <th style="width: 33.33%;">{{ __("Total Value of upcoming orders") }}</th>
+                    <th style="width: 33.33%;">{{ __("Orders by status") }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -34,7 +34,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="2" style="color: #6c757d; text-align: center;">No metrics available</td>
+                                    <td colspan="2" style="color: #6c757d; text-align: center;">{{ __("No metrics available") }}</td>
                                 </tr>
                             @endforelse
                         </table>
@@ -43,17 +43,17 @@
             </tbody>
         </table>
         <!-- orders due soonest-->
-        <h2 style="margin-bottom: 15px;">5 Orders Due Soonest</h2>
+        <h2 style="margin-bottom: 15px;">{{ __("5 Orders Due Soonest") }}</h2>
         <table border="1" cellpadding="10"
             style="width:100%; border-collapse: collapse; margin-bottom: 40px; border-color: black;">
             <thead>
                 <tr style="background-color: #f2f2f2;">
-                    <th>Order Number</th>
-                    <th>Customer</th>
-                    <th>Product</th>
-                    <th>Quantity</th>
-                    <th>Status</th>
-                    <th>Due Date</th>
+                    <th>{{ __("Order Number") }}</th>
+                    <th>{{ __("Customer") }}</th>
+                    <th>{{ __("Product") }}</th>
+                    <th>{{ __("Quantity") }}</th>
+                    <th>{{ __("Status") }}</th>
+                    <th>{{ __("Due Date") }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -62,7 +62,7 @@
                         <td><strong>{{ $upcoming->order_number }}</strong></td>
                         <td>
                             <a href="{{ route('customers.show', $upcoming->customer_id) }}">
-                                {{ $upcoming->customer->name ?? 'N/A' }}
+                                {{ $upcoming->customer->name ?? __("N/A") }}
                             </a>
                         </td>
                         <td>{{ $upcoming->product }}</td>
@@ -75,7 +75,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="6" style="text-align: center; color: #6c757d;">No pending upcoming orders.</td>
+                        <td colspan="6" style="text-align: center; color: #6c757d;">{{ __("No pending upcoming orders.") }}</td>
                     </tr>
                 @endforelse
             </tbody>
@@ -93,7 +93,7 @@
                     data: {
                         labels: {!! json_encode($chartLabels) !!},
                         datasets: [{
-                            label: "Orders Placed",
+                            label: "{{ __("Orders Placed") }}",
                             backgroundColor: "rgba(0, 0, 255, 0.1)",
                             borderColor: "rgba(0, 0, 255, 1.0)",
                             borderWidth: 2,

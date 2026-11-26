@@ -15,7 +15,7 @@ A small order tracker with a staff and customer view.
 * **Customer Orders Page**: Lets customers view items they have ordered.
 * **Product view page**: lets you view a product's details.
 * **Checkout**: Lets customers enter their payment details to buy products. Uses Stripe API.
-* **Account Settings**: Lets customers delete their account and change their details.
+* **Account Settings**: Lets customers delete their account, change the language, and change their details.
 * **Basket** lets customers add things to basket and see what's in their basket +total price
 * **Customer Service**: A live function where staff can talk directly to customers.
 

@@ -71,7 +71,7 @@
 <body>
 
     <div class="login-card">
-        <h2 style="margin-top:0; margin-bottom:20px; text-align:center;">Admin account Login</h2>
+        <h2 style="margin-top:0; margin-bottom:20px; text-align:center;">{{ __("Admin account Login") }}</h2>
 
         @if ($errors->any())
             <div class="error-message">
@@ -84,21 +84,20 @@
             @csrf
 
             <div class="form-group">
-                <label for="email">Email Address</label>
+                <label for="email">{{ __("Email Address") }}</label>
                 <input type="email" id="email" name="email" value="{{ old('email') }}" required autofocus>
             </div>
 
             <div class="form-group">
-                <label for="password">Password</label>
+                <label for="password">{{ __("Password") }}</label>
                 <input type="password" id="password" name="password" required>
             </div>
 
-            <button type="submit" class="btn-submit">log in</button>
+            <button type="submit" class="btn-submit">{{ __("log in") }}</button>
         </form>
 
         <p style="text-align: center; margin-top: 20px; font-size: 14px;">
-            Don't have an account? <a href="{{ route('staff.register') }}" style="color: #333; font-weight: bold;">Sign
-                up</a>
+            {{ __("Don't have an account?") }} <a href="{{ route('staff.register') }}" style="color: #333; font-weight: bold;">{{ __("Sign up") }}</a>
         </p>
 
     </div>

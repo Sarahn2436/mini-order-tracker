@@ -71,7 +71,7 @@
 <body>
 
     <div class="CustomerRegister-card">
-        <h2 style="margin-top:0; margin-bottom:20px; text-align:center;">Create Account</h2>
+        <h2 style="margin-top:0; margin-bottom:20px; text-align:center;">{{ __("Create Account") }}</h2>
 
         @if ($errors->any())
             <div class="error-message">
@@ -83,31 +83,30 @@
             @csrf
 
             <div class="form-group">
-                <label for="Customername">Full Name</label>
+                <label for="Customername">{{ __("Full Name") }}</label>
                 <input type="text" id="Customername" name="Customername" value="{{ old('name') }}" required autofocus>
             </div>
 
             <div class="form-group">
-                <label for="Customeremail">Email Address</label>
+                <label for="Customeremail">{{ __("Email Address") }}</label>
                 <input type="email" id="Customeremail" name="Customeremail" value="{{ old('email') }}" required>
             </div>
 
             <div class="form-group">
-                <label for="Customerpassword">Password</label>
+                <label for="Customerpassword">{{ __("Password") }}</label>
                 <input type="password" id="Customerpassword" name="Customerpassword" required>
             </div>
 
             <div class="form-group">
-                <label for="Customerpassword_confirmation">Confirm Password</label>
+                <label for="Customerpassword_confirmation">{{ __("Confirm Password") }}</label>
                 <input type="password" id="Customerpassword_confirmation" name="Customerpassword_confirmation" required>
             </div>
 
-            <button type="submit" class="btn-submit">Sign Up</button>
+            <button type="submit" class="btn-submit">{{ __("Sign Up") }}</button>
         </form>
 
         <p style="text-align: center; margin-top: 20px; font-size: 14px;">
-            Already have an account? <a href="{{ route('customer.login') }}" style="color: #333; font-weight: bold;">Log
-                in</a>
+            {{ __("Already have an account?") }} <a href="{{ route('customer.login') }}" style="color: #333; font-weight: bold;">{{ __("Log in") }}</a>
         </p>
     </div>
 

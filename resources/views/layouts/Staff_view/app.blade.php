@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mini Order Tracker</title>
+    <title>{{ __("Mini Order Tracker") }}</title>
     <link rel="preconnect" href="https://googleapis.com">
     <link rel="preconnect" href="https://gstatic.com" crossorigin>
     <link href="https://googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;1,400&display=swap"
@@ -87,21 +87,21 @@
             <nav class="nav">
                 <div class="nav-links">
                     <a href="{{ route('dashboard') }}"
-                        class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">Dashboard</a>
+                        class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">{{ __("Dashboard") }}</a>
                     <a href="{{ route('customers.index') }}"
-                        class="{{ request()->routeIs('customers.index') ? 'active' : '' }}">Customers</a>
+                        class="{{ request()->routeIs('customers.index') ? 'active' : '' }}">{{ __("Customers") }}</a>
                     <a href="{{ route('orders') }}"
-                        class="{{ request()->routeIs('orders') ? 'active' : '' }}">Orders</a>
+                        class="{{ request()->routeIs('orders') ? 'active' : '' }}">{{ __("Orders") }}</a>
                     <a href="{{ route('chat') }}"
-                        class="{{ request()->routeIs('chat') ? 'active' : '' }}">Customer support</a>
+                        class="{{ request()->routeIs('chat') ? 'active' : '' }}">{{ __("Customer support") }}</a>
                 </div>
 
                 <!-- search bar stuff -->
                 <div style="display: flex; align-items: center; gap: 12px;">
                     <div class="search-container" style="padding: 0;">
                         <form action="{{ route('orders') }}" method="GET">
-                            <input type="text" placeholder="Search..." name="search" value="{{ request('search') }}">
-                            <button type="submit">Go</button>
+                            <input type="text" placeholder="{{ __("Search...") }}" name="search" value="{{ request('search') }}">
+                            <button type="submit">{{ __("Go") }}</button>
                         </form>
                     </div>
                     <!--logout stuff-->
@@ -109,7 +109,7 @@
                         @csrf
                         <button type="submit"
                             style="background: #ddd; color: black; border: none; padding: 6px 12px; font-size: 14px; border-radius: 4px; cursor: pointer; font-weight: bold; font-family: inherit;">
-                            Logout
+                            {{ __("Logout") }}
                         </button>
                     </form>
                 </div>

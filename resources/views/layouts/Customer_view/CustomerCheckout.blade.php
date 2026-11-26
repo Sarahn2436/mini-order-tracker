@@ -86,70 +86,70 @@
         @csrf
 
         <fieldset>
-            <legend>Shipping Information</legend>
+            <legend>{{ __("Shipping Information") }}</legend>
             <div class="form-group">
-                <label for="shipping-name">Full Name</label>
+                <label for="shipping-name">{{ __("Full Name") }}</label>
                 <input type="text" id="shipping-name" name="shipping_name" autocomplete="name" required>
             </div>
             <div class="form-group">
-                <label for="shipping-address">Address</label>
+                <label for="shipping-address">{{ __("Address") }}</label>
                 <input type="text" id="shipping-address" name="shipping_address" autocomplete="street-address" required>
             </div>
             <div class="form-row">
                 <div class="form-group">
-                    <label for="shipping-city">City</label>
+                    <label for="shipping-city">{{ __("City") }}</label>
                     <input type="text" id="shipping-city" name="shipping_city" autocomplete="address-level2" required>
                 </div>
                 <div class="form-group">
-                    <label for="shipping-zip">Zip Code</label>
+                    <label for="shipping-zip">{{ __("Zip Code") }}</label>
                     <input type="text" id="shipping-zip" name="shipping_zip" autocomplete="postal-code" required>
                 </div>
             </div>
         </fieldset>
 
         <fieldset>
-    <legend>Payment Details</legend>
+    <legend>{{ __("Payment Details") }}</legend>
     <div class="form-group">
-        <label for="card-name">Name on Card</label>
+        <label for="card-name">{{ __("Name on Card") }}</label>
         <input type="text" id="card-name" name="card_name" autocomplete="cc-name" required>
     </div>
 
     <div class="form-group">
-        <label for="card-number">Card Number</label>
+        <label for="card-number">{{ __("Card Number") }}</label>
         <div id="card-number-element" style="background: white; padding: 10px; border: 1px solid #ccc; border-radius: 4px; height: 40px; box-sizing: border-box;"></div>
     </div>
     
     <div class="form-row">
 
         <div class="form-group">
-            <label for="card-expiry">Expiry Date (MM/YY)</label>
+            <label for="card-expiry">{{ __("Expiry Date (MM/YY)") }}</label>
             <div id="card-expiry-element" style="background: white; padding: 10px; border: 1px solid #ccc; border-radius: 4px; height: 40px; box-sizing: border-box;"></div>
         </div>
 
         <div class="form-group">
-            <label for="card-cvc">CVC</label>
+            <label for="card-cvc">{{ __("CVC") }}</label>
             <div id="card-cvc-element" style="background: white; padding: 10px; border: 1px solid #ccc; border-radius: 4px; height: 40px; box-sizing: border-box;"></div>
         </div>
     </div>
     <div id="card-errors" role="alert" style="color: red; margin-top: 8px; font-size: 14px;"></div>
 </fieldset>
         <fieldset>
-            <legend>Billing Address</legend>
+            <legend>{{ __("Billing Address") }}</legend>
             <div class="billing-checkbox" style="margin-bottom: 10px;">
                 <input type="checkbox" id="same-as-shipping" name="same_as_shipping" checked>
-                <label for="same-as-shipping">Same as shipping address</label>
+                <label for="same-as-shipping">{{ __("Same as shipping address") }}</label>
             </div>
             <div id="billing-address-fieldset" style="display: none;">
-                <div class="form-group"><label for="billing-name">Full Name</label><input type="text" id="billing-name" name="billing_name"></div>
-                <div class="form-group"><label for="billing-address">Address</label><input type="text" id="billing-address" name="billing_address"></div>
+                <div class="form-group"><label for="billing-name">{{ __("Full Name") }}</label><input type="text" id="billing-name" name="billing_name"></div>
+                <div class="form-group"><label for="billing-address">{{ __("Address") }}</label><input type="text" id="billing-address" name="billing_address"></div>
                 <div class="form-row">
-                    <div class="form-group"><label for="billing-city">City</label><input type="text" id="billing-city" name="billing_city"></div>
-                    <div class="form-group"><label for="billing-zip">Zip Code</label><input type="text" id="billing-zip" name="billing_zip"></div>
+                    <div class="form-group"><label for="billing-city">{{ __("City") }}</label><input type="text" id="billing-city" name="billing_city"></div>
+                    <div class="form-group"><label for="billing-zip">{{ __("Zip Code") }}</label><input type="text" id="billing-zip" name="billing_zip"></div>
                 </div>
             </div>
         </fieldset>
 
-        <button type="submit" class="submit-btn" id="submitBtn">Place Order</button>
+        <button type="submit" class="submit-btn" id="submitBtn">{{ __("Place Order") }}</button>
     </form>
 </div>
 
@@ -159,7 +159,7 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     if (typeof Stripe === 'undefined') {
-        document.getElementById('card-errors').textContent = "Payment fields initializing... Please refresh if boxes are blank.";
+        document.getElementById('card-errors').textContent = "{{ __("Payment fields initializing... Please refresh if boxes are blank.") }}";
         return;
     }
 
@@ -238,7 +238,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         })
         .catch(err => {
-            document.getElementById('card-errors').textContent = "Server communication error. Please try again.";
+            document.getElementById('card-errors').textContent = "{{ __("Server communication error. Please try again.") }}";
             document.getElementById('submitBtn').disabled = false;
         });
     }

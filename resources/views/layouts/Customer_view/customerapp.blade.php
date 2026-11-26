@@ -101,7 +101,7 @@
             cursor: pointer;
             background-color: #fff;
             border-bottom: 1px solid #d4d4d4;
-            color: #1b1b1b; /* FIX: Force dark text on white autocomplete dropdown entries */
+            color: #1b1b1b;
         }
         .autocomplete-items div:hover {
             background-color: #e9e9e9;
@@ -270,10 +270,10 @@
     <header class="w-full lg:max-w-6xl max-w-full text-sm mb-6 mx-auto">
         <nav class="nav">
             <div class="nav-links">
-                <a href="{{ route('customer.orders') }}">customer orders</a>
-                <a href="{{ route('customer.dashboard') }}">customer dashboard</a>
-                <a href="{{ route('customer.checkout') }}" class="">Checkout</a>
-                <a href="{{ route('customer.settings') }}" class="">Account settings</a>
+                <a href="{{ route('customer.orders') }}">{{ __("customer orders") }}</a>
+                <a href="{{ route('customer.dashboard') }}">{{ __("customer dashboard") }}</a>
+                <a href="{{ route('customer.checkout') }}" class="">{{ __("Checkout") }}</a>
+                <a href="{{ route('customer.settings') }}" class="">{{ __("Account settings") }}</a>
             </div>
 
             <!-- nav container-->
@@ -282,7 +282,7 @@
                 <!-- basket -->
                 <div style="display: flex; align-items: center;">
                     <a href="{{ route('customer.basket') }}">
-                        <img src="{{ asset('images/mini basket icon.png') }}" alt="Basket Icon"
+                        <img src="{{ asset('images/mini basket icon.png') }}" alt="{{ __("Basket Icon") }}"
                             style="width:42px; height:42px; filter: brightness(0) invert(1);">
                     </a>
                 </div>
@@ -295,9 +295,9 @@
                     @endif
 
                     <div class="autocomplete" style="position: relative; display: inline-block;">
-                        <input id="myInput" type="text" placeholder="Search..." name="search" value="{{ request('search') }}">
+                        <input id="myInput" type="text" placeholder="{{ __("Search...") }}" name="search" value="{{ request('search') }}">
                     </div>
-                    <button type="submit">Go</button>
+                    <button type="submit">{{ __("Go") }}</button>
                 </form>
 
                 </div>
@@ -407,7 +407,7 @@
                 <form action="{{ route('customer.logout') }}" method="POST" style="margin: 0;">
                     @csrf
                     <button type="submit" class="logout-btn">
-                        Logout
+                        {{ __("Logout") }}
                     </button>
                 </form>
             </div>
@@ -417,26 +417,27 @@
 <div id="chatWindow" class="customer-service-container">
     
     <!-- small button -->
-    <button id="chatTrigger" class="minimized-btn" onclick="toggleChat()">Need help?</button>
+    <button id="chatTrigger" class="minimized-btn" onclick="toggleChat()">{{ __("Need help?") }}</button>
 
     <!-- expanded chat -->
     <div class="chat-expanded-view">
         
         <!-- header -->
         <div class="chat-header" onclick="toggleChat()">
-            <span>Customer Support</span>
+            <span>{{ __("Customer Support") }}</span>
             <span class="close-x">✕</span>
         </div>
 
         <!-- conversation history -->
         <div class="chat-messages">
-            <div class="message bot">Hello! How can we help you today?</div>
+            <div class="message bot">{!! __('Hello! How can we help you today?') !!}</div>
         </div>
+
 
         <!-- Input form  chat-bar -->
         <div class="chat-bar">
-            <input type="text" id="chatInput" placeholder="What's on your mind?" onkeypress="handleKeyPress(event)">
-            <button class="send-btn" onclick="sendMessage()">Send</button>
+            <input type="text" id="chatInput" placeholder="{{ __("What's on your mind?") }}" onkeypress="handleKeyPress(event)">
+            <button class="send-btn" onclick="sendMessage()">{{ __("Send") }}</button>
         </div>
 
 
@@ -471,12 +472,12 @@
         fetch(`/chat/messages/${sessionId}`)
             .then(res => res.json())
             .then(messages => {
-                const messagesContainer = document.querySelector('.chat-messages');
+             const messagesContainer = document.querySelector('.chat-messages');
                 messagesContainer.innerHTML = '';
 
-                const defaultMsg = document.createElement('div');
+               const defaultMsg = document.createElement('div');
                 defaultMsg.className = 'message bot';
-                defaultMsg.innerText = 'Hello! How can we help you today?';
+                defaultMsg.innerText = @json(__('Hello! How can we help you today?'));
                 messagesContainer.appendChild(defaultMsg);
 
                 messages.forEach(msg => {

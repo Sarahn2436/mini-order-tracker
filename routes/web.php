@@ -12,6 +12,8 @@ use App\Http\Controllers\CustomerCheckoutController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ReviewController;
 use Illuminate\Support\Facades\Schedule;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 Route::redirect('/', '/customerLogin');
 
@@ -74,3 +76,22 @@ Route::post('/stripe/checkout', [CustomerCheckoutController::class, 'add'])->nam
 Schedule::command('orders:advance-status')->everyMinute();
 
 
+
+Route::get('lang/{locale}', function ($locale, \Illuminate\Http\Request $request) {
+    if (in_array($locale, ['en', 'es', 'fr'])) {
+        session(['locale' => $locale]);
+
+        if (\Illuminate\Support\Facades\Auth::check()) {
+            /** @var \App\Models\User $user */
+            $user = \Illuminate\Support\Facades\Auth::user();
+            $user->update(['locale' => $locale]);
+        }
+
+    }
+
+    if ($request->filled('redirect')) {
+        return redirect($request->query('redirect'));
+    }
+
+    return redirect()->back();
+})->name('lang.switch');

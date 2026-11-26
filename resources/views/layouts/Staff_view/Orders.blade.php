@@ -1,22 +1,22 @@
 <!-- content for orders page -->
 @extends('layouts.Staff_view.app')
 
-@section('title', 'Orders')
+@section('title', __("Orders"))
 
 @section('content')
     <div class="container">
-        <h1>Orders</h1>
+        <h1>{{ __("Orders") }}</h1>
 
         <!--filter by status stuff -->
         <form action="{{ route('orders') }}" method="GET" style="margin-bottom: 20px;">
-            <label for="status">Filter by Status:</label>
+            <label for="status">{{ __("Filter by Status:") }}</label>
             <select name="status" id="status" onchange="this.form.submit()">
-                <option value="">All Statuses</option>
-                <option value="New" {{ request('status') == 'New' ? 'selected' : '' }}>New</option>
-                <option value="In production" {{ request('status') == 'In production' ? 'selected' : '' }}>In production
+                <option value="">{{ __("All Statuses") }}</option>
+                <option value="New" {{ request('status') == 'New' ? 'selected' : '' }}>{{ __("New") }}</option>
+                <option value="In production" {{ request('status') == 'In production' ? 'selected' : '' }}>{{ __("In production") }}
                 </option>
-                <option value="Despatched" {{ request('status') == 'Despatched' ? 'selected' : '' }}>Despatched</option>
-                <option value="Cancelled" {{ request('status') == 'Cancelled' ? 'selected' : '' }}>Cancelled</option>
+                <option value="Despatched" {{ request('status') == 'Despatched' ? 'selected' : '' }}>{{ __("Despatched") }}</option>
+                <option value="Cancelled" {{ request('status') == 'Cancelled' ? 'selected' : '' }}>{{ __("Cancelled") }}</option>
             </select>
         </form>
 
@@ -24,13 +24,13 @@
         <table border="1" cellpadding="10" style="width:100%; border-collapse: collapse;">
             <thead>
                 <tr style="background-color: #f2f2f2;">
-                    <th>Order Number</th>
-                    <th>Customer</th>
-                    <th>Product</th>
-                    <th>Quantity</th>
-                    <th>Unit Price</th>
-                    <th>Status</th>
-                    <th>Due Date</th>
+                    <th>{{ __("Order Number") }}</th>
+                    <th>{{ __("Customer") }}</th>
+                    <th>{{ __("Product") }}</th>
+                    <th>{{ __("Quantity") }}</th>
+                    <th>{{ __("Unit Price") }}</th>
+                    <th>{{ __("Status") }}</th>
+                    <th>{{ __("Due Date") }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -38,7 +38,7 @@
                     <tr>
                         <td><strong>{{ $order->order_number }}</strong></td>
                         <td>
-                            <a href="{{ route('customers.show', $order->customer_id) }}">{{ $order->customer->name ?? 'N/A' }}</a>
+                            <a href="{{ route('customers.show', $order->customer_id) }}">{{ $order->customer->name ?? __("N/A") }}</a>
                         </td>
                         <td>{!! preg_replace('/(\(x\d+\))/', '<span style="color: red;">$1</span>', e($order->product)) !!}</td>
                         <td>{{ $order->quantity }}</td>
@@ -49,7 +49,7 @@
                 @empty
 
                     <tr>
-                        <td colspan="7">No orders found.</td>
+                        <td colspan="7">{{ __("No orders found.") }}</td>
                     </tr>
                 @endforelse
             </tbody>

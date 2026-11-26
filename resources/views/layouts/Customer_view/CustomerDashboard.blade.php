@@ -146,10 +146,10 @@
     <header class="w-full text-sm mb-2"> 
         <nav class="typenav"> 
             <div class="typenav-links"> 
-                <a href="{{ route('customer.dashboard', ['category' => 'Fashion']) }}" class="{{ request('category') === 'Fashion' ? 'active' : '' }}">Fashion</a>
-                <a href="{{ route('customer.dashboard', ['category' => 'Technology']) }}" class="{{ request('category') === 'Technology' ? 'active' : '' }}">Technology</a>
-                <a href="{{ route('customer.dashboard', ['category' => 'Cards']) }}" class="{{ request('category') === 'Cards' ? 'active' : '' }}">Cards</a>
-                <a href="{{ route('customer.dashboard', ['category' => 'Misc']) }}" class="{{ request('category') === 'Misc' ? 'active' : '' }}">Misc</a>
+                <a href="{{ route('customer.dashboard', ['category' => 'Fashion']) }}" class="{{ request('category') === 'Fashion' ? 'active' : '' }}">{{ __("Fashion") }}</a>
+                <a href="{{ route('customer.dashboard', ['category' => 'Technology']) }}" class="{{ request('category') === 'Technology' ? 'active' : '' }}">{{ __("Technology") }}</a>
+                <a href="{{ route('customer.dashboard', ['category' => 'Cards']) }}" class="{{ request('category') === 'Cards' ? 'active' : '' }}">{{ __("Cards") }}</a>
+                <a href="{{ route('customer.dashboard', ['category' => 'Misc']) }}" class="{{ request('category') === 'Misc' ? 'active' : '' }}">{{ __("Misc") }}</a>
             </div> 
         </nav> 
     </header> 
@@ -161,28 +161,28 @@
         <div class="hero-banner"> 
             <div class="hero-overlay"> 
                 <div class="hero-content"> 
-                    <h1>Welcome Back, {{ auth()->user()->name ?? 'Guest' }}!</h1> 
-                    <p>Example.</p> 
-                    <a href="#" class="hero-btn">example</a> 
+                    <h1>{{ __("Welcome Back,") }} {{ auth()->user()->name ?? __("Guest") }}!</h1> 
+                    <p>{{ __("Example.") }}</p> 
+                    <a href="#" class="hero-btn">{{ __("example") }}</a> 
                 </div> 
             </div> 
         </div> 
 
         <!-- Shop items grid heading --> 
         <p style="font-size: 30px; font-weight: bold; text-align: center; margin: 40px 0 20px 0;">
-            {{ request('category') ? request('category') : 'Dashboard' }}
+            {{ request('category') ? __(request('category')) : __("Dashboard") }}
         </p>
 
         <!-- Grid Container --> 
         <div class="category-grid-container" style=" display: grid !important; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)) !important; gap: 20px !important; box-sizing: border-box !important; "> 
             @if(request('search')) 
                 <div style="grid-column: 1 / -1; margin-bottom: 10px; font-size: 18px;"> 
-                    Showing results for: <strong>"{{ request('search') }}"</strong> 
-                    <a href="{{ route('customer.dashboard') }}" style="margin-left: 15px; color: #007bff; text-decoration: none; font-size: 14px;">Clear Search</a> 
+                    {{ __("Showing results for:") }} <strong>"{{ request('search') }}"</strong> 
+                    <a href="{{ route('customer.dashboard') }}" style="margin-left: 15px; color: #007bff; text-decoration: none; font-size: 14px;">{{ __("Clear Search") }}</a> 
                                 @if(request('category')) 
                     <div style="grid-column: 1 / -1; margin-bottom: 10px; font-size: 18px;"> 
-                        Viewing Category: <strong>"{{ request('category') }}"</strong> 
-                        <a href="{{ route('customer.dashboard') }}" style="margin-left: 15px; color: #007bff; text-decoration: none; font-size: 14px;">View All Products</a> 
+                        {{ __("Viewing Category:") }} <strong>"{{ __(request('category')) }}"</strong> 
+                        <a href="{{ route('customer.dashboard') }}" style="margin-left: 15px; color: #007bff; text-decoration: none; font-size: 14px;">{{ __("View All Products") }}</a> 
                     </div> 
 @endif
                 </div> 
@@ -213,9 +213,9 @@
             @empty 
                 <div style="grid-column: 1 / -1; text-align: center; color: #888; font-size: 18px; padding: 40px 20px;"> 
                     @if(request('search')) 
-                        No products found matching "{{ request('search') }}". 
+                        {{ __("No products found matching") }} "{{ request('search') }}". 
                     @else 
-                        No products found in the database yet! 
+                        {{ __("No products found in the database yet!") }} 
                     @endif 
                 </div> 
             @endforelse 

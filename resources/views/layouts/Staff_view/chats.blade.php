@@ -137,19 +137,19 @@
 <div class="chat-support-wrapper">
     <!-- Sidebar -->
     <div class="chat-sessions-sidebar">
-        <div class="sidebar-header">Active Conversations</div>
+        <div class="sidebar-header">{{ __("Active Conversations") }}</div>
         <div class="sessions-list" id="sessionsList"></div>
     </div>
 
     <!-- Main Chat Area -->
     <div class="workspace-panel">
-        <div class="workspace-header" id="currentChatHeader">Select a chat from the sidebar to begin</div>
+        <div class="workspace-header" id="currentChatHeader">{{ __("Select a chat from the sidebar to begin") }}</div>
         <div class="messages-display" id="chatStream">
             <!-- Messages stream -->
         </div>
         <div class="workspace-chat">
-            <input type="text" id="staffReplyField" placeholder="Type a response to the customer..." onkeypress="checkEnter(event)">
-            <button onclick="submitStaffReply()">Send Reply</button>
+            <input type="text" id="staffReplyField" placeholder="{{ __("Type a response to the customer...") }}" onkeypress="checkEnter(event)">
+            <button onclick="submitStaffReply()">{{ __("Send Reply") }}</button>
         </div>
     </div>
 </div>
@@ -172,7 +172,7 @@
                 sidebarContainer.innerHTML = '';
 
                 if (rooms.length === 0) {
-                    sidebarContainer.innerHTML = '<div style="padding: 15px; color: #888;">No active chats</div>';
+                    sidebarContainer.innerHTML = '<div style="padding: 15px; color: #888;">{{ __("No active chats") }}</div>';
                     return;
                 }
 
@@ -195,7 +195,7 @@
 
     function selectChat(sessionId) {
         currentActiveSession = sessionId;
-        document.getElementById('currentChatHeader').innerText = `Managing Conversation: ${sessionId}`;
+        document.getElementById('currentChatHeader').innerText = `{{ __("Managing Conversation:") }} ${sessionId}`;
         fetchMessages();
         clearInterval(messageTimer);
         messageTimer = setInterval(fetchMessages, 3000);

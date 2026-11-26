@@ -56,5 +56,12 @@ class User extends Authenticatable
         return $this->hasMany(Order::class, 'customer_id');
     }
 
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+        'locale',
+    ];
+
 
 }

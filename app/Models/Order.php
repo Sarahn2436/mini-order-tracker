@@ -38,7 +38,6 @@ class Order extends Model
 
 public function products()
 {
-    // If you have a pivot table named 'order_product' or 'order_items':
     return $this->belongsToMany(Product::class);
 }
 
