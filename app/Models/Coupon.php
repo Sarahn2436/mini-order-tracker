@@ -6,7 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Coupon extends Model
 {
-    protected $fillable = ['code', 'type', 'value', 'is_active'];
+      protected $fillable = ['code', 'type', 'value', 'is_active'];
+
+    protected $casts = [
+        'is_active' => 'boolean',
+    ];
 
     public function users()
     {

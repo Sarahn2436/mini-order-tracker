@@ -94,6 +94,8 @@
                         class="{{ request()->routeIs('orders') ? 'active' : '' }}">{{ __("Orders") }}</a>
                     <a href="{{ route('chat') }}"
                         class="{{ request()->routeIs('chat') ? 'active' : '' }}">{{ __("Customer support") }}</a>
+                    <a href="{{ route('Coupons') }}"
+                        class="{{ request()->routeIs('Coupons') ? 'active' : '' }}">{{ __("Coupons") }}</a>
                 </div>
 
                 <!-- search bar stuff -->

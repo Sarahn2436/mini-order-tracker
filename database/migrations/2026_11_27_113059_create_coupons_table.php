@@ -26,7 +26,9 @@ return new class extends Migration
      * Reverse the migrations.
      */
     public function down(): void
-    {
-        Schema::dropIfExists('coupons');
-    }
+{
+    Schema::table('coupons', function (Blueprint $table) {
+        $table->dropColumn('is_active');
+    });
+}
 };

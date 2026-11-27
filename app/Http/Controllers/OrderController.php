@@ -100,6 +100,42 @@ public function updateStatus(Request $request, Order $order)
     return back()->with('success', __('Order status updated successfully.'));
 }
 
+public function bulkUpdateStatus(Request $request)
+{
+    $validated = $request->validate([
+        'order_ids' => 'required|array|min:1',
+        'order_ids.*' => 'exists:orders,id',
+        'status' => 'required|in:In production,Despatched,Cancelled',
+    ]);
+
+    $newStatus = $validated['status'];
+    $orders = Order::whereIn('id', $validated['order_ids'])->get();
+    $updatedCount = 0;
+
+    $progression = [
+        'New' => 1,
+        'In production' => 2,
+        'Despatched' => 3,
+    ];
+
+    foreach ($orders as $order) {
+        if (in_array($order->status, ['Despatched', 'Cancelled'])) {
+            continue;
+        }
+        if ($newStatus !== 'Cancelled' && $progression[$newStatus] < $progression[$order->status]) {
+            continue;
+        }
+        $order->update(['status' => $newStatus]);
+        $updatedCount++;
+    }
+
+    return back()->with('success', __(':count order(s) updated to :status.', [
+        'count' => $updatedCount,
+        'status' => $newStatus,
+    ]));
+}
+
+
 
 
 

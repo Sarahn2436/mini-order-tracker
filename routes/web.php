@@ -14,6 +14,7 @@ use App\Http\Controllers\ReviewController;
 use Illuminate\Support\Facades\Schedule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use App\Http\Controllers\CouponController;
 
 Route::redirect('/', '/customerLogin');
 
@@ -40,6 +41,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/orders', [OrderController::class, 'showOrders'])->name('orders');
     Route::patch('/orders/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
 
+    Route::get('/coupons', [CouponController::class, 'index'])->name('Coupons');
+    Route::post('/coupons', [CouponController::class, 'store'])->name('coupons.store');
+    Route::patch('/coupons/{coupon}/deactivate', [CouponController::class, 'deactivate'])->name('coupons.deactivate');
+
 
     Route::resource('customers', CustomerController::class);
 });
@@ -57,6 +62,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/order/add', [OrderController::class, 'add'])->name('order.add');
     Route::get('/customerorders', [OrderController::class, 'index'])->name('customer.orders');
     Route::delete('/order/remove/{order}', [OrderController::class, 'remove'])->name('order.remove');
+    Route::patch('/orders/bulk-status', [OrderController::class, 'bulkUpdateStatus'])->name('orders.bulkUpdateStatus');
     Route::get('/customer-settings', [CustomerAuthController::class, 'accountSettings'])->name('customer.settings');
     Route::delete('/customer-settings/delete', [CustomerAuthController::class, 'deleteAccount'])->name('customer.account.delete');
     Route::put('/customer-settings/update', [CustomerAuthController::class, 'updateAccount'])->name('customer.account.update');
