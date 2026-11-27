@@ -30,9 +30,8 @@
                                 <td style="padding: 16px; font-size: 16px; font-weight: 600; color: #1e293b; text-align: right;">
                                      {!! preg_replace('/(\(x\d+\))/', '<span style="color: #dc2626; font-weight: 700;">$1</span>', e($order->product)) !!}
                                 </td>
-
                                 <td style="padding: 16px; font-size: 16px; font-weight: 600; color: #1e293b; text-align: right;">
-                                    ({{ $order->status }})
+                                    ({{ __($order->status) }})
                                 </td>
                                 <td style="padding: 16px; text-align: center;">
                                 @if ($order->status !== 'Despatched' && $order->status !== 'Cancelled')

@@ -18,4 +18,39 @@ public function show(Request $request, $id, $slug = null)
     return view('layouts.Customer_view.ProductView', compact('product'));
 }
 
+public function dashboard(Request $request)
+{
+    $query = Product::query();
+
+    if ($request->filled('category')) {
+        $query->where('category', $request->category);
+    }
+
+    if ($request->filled('search')) {
+        $query->where('name', 'like', '%' . $request->search . '%');
+    }
+
+    switch ($request->sort) {
+        case 'best_sellers':
+            $query->withCount('orders')->orderByDesc('orders_count');
+            break;
+
+        case 'price_asc':
+            $query->orderBy('price', 'asc');
+            break;
+
+        case 'price_desc':
+            $query->orderBy('price', 'desc');
+            break;
+
+        default:
+            $query->latest();
+            break;
+    }
+
+    $products = $query->get();
+
+    return view('layouts.Customer_view.dashboard', compact('products'));
+}
+
 }

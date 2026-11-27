@@ -146,8 +146,14 @@
     "Are you sure you want to permanently delete your account?": "¿Estás seguro de que quieres eliminar tu cuenta de forma permanente?",
     "Delete My Account": "Eliminar mi cuenta",
     "Language Preferences": "Preferencias de idioma",
-    "Choose your preferred language for the interface.": "Elige tu idioma preferido para la interfaz."
-
-
+    "Choose your preferred language for the interface.": "Elige tu idioma preferido para la interfaz.",
+    "Sort by:": "Ordenar por:",
+    "Default": "Predeterminado",
+    "Best Sellers": "Más vendidos",
+    "Price: Low to High": "Precio: de menor a mayor",
+    "Price: High to Low": "Precio: de mayor a menor",
+    "Discount Code": "Código de descuento",
+    "Enter coupon code": "Introduce el código de cupón",
+    "Apply": "Aplicar"
 
 }

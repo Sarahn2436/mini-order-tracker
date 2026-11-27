@@ -64,7 +64,7 @@
             border: none;
             border-radius: 4px 0 0 4px;
             outline: none;
-            color: #1b1b1b; /* Avoid text color inheritance issues */
+            color: #1b1b1b;
         }
 
         .search-container button {

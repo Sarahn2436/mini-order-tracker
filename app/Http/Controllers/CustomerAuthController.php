@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Product; 
 use App\Models\Order;
 use App\Models\Customer;
+use App\Models\OrderItem;
 
 class CustomerAuthController extends Controller
 {
@@ -109,7 +110,7 @@ public function updateAccount(Request $request)
         'email' => $validated['email'],
     ]);
 
-    # if user has no id, falls back to em
+    # if user has no id, falls back to emal
     $customer = Customer::where('user_id', $user->id)
         ->orWhere('email', $oldEmail)
         ->first();
@@ -152,20 +153,42 @@ public function updateAccount(Request $request)
         return redirect('/customerLogin')->with('success', 'Your account has been permanently deleted.');
     }
 
-    public function CustomerDashboard(Request $request)
+       public function CustomerDashboard(Request $request)
     {
         $query = Product::query();
 
         // Text search filtering logic
-        if ($request->has('search') && $request->filled('search')) {
+        if ($request->filled('search')) {
             $searchTerm = $request->input('search');
             $query->where('name', 'LIKE', "%{$searchTerm}%");
         }
 
         // Category filtering logic
-        if ($request->has('category') && $request->filled('category')) {
+        if ($request->filled('category')) {
             $categoryName = $request->input('category');
             $query->where('category', $categoryName);
+        }
+
+        // Sorting logic
+        switch ($request->input('sort')) {
+            case 'best_sellers':
+                $query->addSelect([
+                    'total_sold' => OrderItem::selectRaw('COALESCE(SUM(quantity), 0)')
+                        ->whereColumn('product_id', 'products.id')
+                ])->orderByDesc('total_sold');
+                break;
+
+            case 'price_asc':
+                $query->orderBy('price', 'asc');
+                break;
+
+            case 'price_desc':
+                $query->orderBy('price', 'desc');
+                break;
+
+            default:
+                $query->latest();
+                break;
         }
 
         // fetch products
@@ -174,6 +197,7 @@ public function updateAccount(Request $request)
         // return dashboard
         return view('layouts.Customer_view.CustomerDashboard', compact('products'));
     }
+
 
     public function customerBasket()
     {

@@ -7,11 +7,11 @@ A small order tracker with a staff and customer view.
 ### Staff
 * **Dashboard Page**: Summarises the orders database.
 * **Customers Page**: Shows customer names, emails, and companies. Allows you to edit, delete, or view them (the view option displays their specific orders etc.).
-* **Orders Page**: Displays the order number, customer, product, quantity, unit price, status, and due date.
+* **Orders Page**: Displays the order number, customer, product, quantity, unit price, status, and due date. allows you to change status for orders.
 * **Customer Service**: A live function where staff can talk directly to customers.
 
 ### Customers
-* **Dashboard Page**: Lets customers look at products and browse product categories (Fashion, Technology, Cards, Misc). Takes you to the product view page.
+* **Dashboard Page**: Lets customers look at products and browse product categories (Fashion, Technology, Cards, Misc). Takes you to the product view page. can also filter dashboard by most popular products, price from low to high and high to low.
 * **Customer Orders Page**: Lets customers view items they have ordered.
 * **Product view page**: lets you view a product's details.
 * **Checkout**: Lets customers enter their payment details to buy products. Uses Stripe API.

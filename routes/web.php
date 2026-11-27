@@ -38,6 +38,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/orders', [OrderController::class, 'showOrders'])->name('orders');
+    Route::patch('/orders/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
+
 
     Route::resource('customers', CustomerController::class);
 });
@@ -51,6 +53,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/product-view/{slug}', [ProductController::class, 'show'])->name('customer.product');
     Route::post('/product/{product}/review', [ReviewController::class, 'store'])->name('reviews.store')->middleware('auth');
     Route::get('/customer-checkout', [CustomerCheckoutController::class, 'CustomerCheckout'])->name('customer.checkout');
+    Route::post('/coupon/apply', [CustomerCheckoutController::class, 'applyCoupon'])->name('coupon.apply');
     Route::post('/order/add', [OrderController::class, 'add'])->name('order.add');
     Route::get('/customerorders', [OrderController::class, 'index'])->name('customer.orders');
     Route::delete('/order/remove/{order}', [OrderController::class, 'remove'])->name('order.remove');

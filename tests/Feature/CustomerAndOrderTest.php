@@ -7,17 +7,18 @@ use App\Models\Order;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 class CustomerAndOrderTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * Test 1: Creating a customer with valid data.
-     */
-    public function test_staff_can_create_a_customer(): void
+
+     //Test 1: Creating a customer with valid data.
+    #[Test]
+    public function staff_reate_customer(): void
     {
-        // Authenticate a staff/admin user if your route requires login
+        //authenticate the staff
         $user = User::factory()->create();
 
         $customerData = [
@@ -37,10 +38,9 @@ class CustomerAndOrderTest extends TestCase
         ]);
     }
 
-    /**
-     * Test 2: Validation failing when required fields are missing or invalid.
-     */
-    public function test_creating_a_customer_fails_validation_with_invalid_data(): void
+     // Test 2: Validation failing when required fields are missing or invalid.
+    #[Test]
+    public function staff_create_customer_fail(): void
     {
         $user = User::factory()->create();
 
@@ -59,20 +59,31 @@ class CustomerAndOrderTest extends TestCase
         $this->assertDatabaseCount('customers', 0);
     }
 
-    /**
-     * Test 3: Deleting an order.
-     */
-    public function test_staff_can_delete_an_order(): void
+     //Test 3: Cancelling an order.
+     #[Test]
+    public function staff_cancel_order(): void
     {
         $user = User::factory()->create();
-        $order = Order::factory()->create();
+        $customer = Customer::create([
+            'name' => 'Sarah',
+            'email' => 'sarah@example.com',
+            'company' => 'example-company',
+        ]);
 
-        $response = $this->actingAs($user)->delete(route('orders.destroy', $order->id));
+        $order = Order::factory()->create([
+            'customer_id' => $customer->id,
+            'status' => 'New',
+        ]);
 
-        // makes sure it redirects cleanly and removes the order from the database
+        $response = $this->actingAs($user)->patch(route('orders.updateStatus', $order->id), [
+            'status' => 'Cancelled',
+        ]);
+
+        // makes sure it redirects cleanly and updates the order status in the database
         $response->assertRedirect();
-        $this->assertDatabaseMissing('orders', [
+        $this->assertDatabaseHas('orders', [
             'id' => $order->id,
+            'status' => 'Cancelled',
         ]);
     }
 }

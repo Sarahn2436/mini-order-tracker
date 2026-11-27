@@ -15,3 +15,9 @@ class CustomerSeeder extends Seeder
         //
     }
 }
+
+//migrate:fresh --seed
+// seeds every database with new info
+
+// php artisan db:seed --class=[seeder]
+// seeds one database with new info

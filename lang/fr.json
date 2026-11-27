@@ -1,5 +1,5 @@
 {
-        "Language": "Langue",
+    "Language": "Langue",
     "customer orders": "commandes clients",
     "customer dashboard": "tableau de bord client",
     "Checkout": "Paiement",
@@ -146,7 +146,14 @@
     "Are you sure you want to permanently delete your account?": "Êtes-vous sûr de vouloir supprimer définitivement votre compte ?",
     "Delete My Account": "Supprimer mon compte",
     "Language Preferences": "Préférences de langue",
-    "Choose your preferred language for the interface.": "Choisissez votre langue préférée pour l'interface."
-
+    "Choose your preferred language for the interface.": "Choisissez votre langue préférée pour l'interface.",
+    "Sort by:": "Trier par :",
+    "Default": "Par défaut",
+    "Best Sellers": "Meilleures ventes",
+    "Price: Low to High": "Prix : croissant",
+    "Price: High to Low": "Prix : décroissant",
+    "Discount Code": "Code de réduction",
+    "Enter coupon code": "Saisir le code promo",
+    "Apply": "Appliquer"
 
 }

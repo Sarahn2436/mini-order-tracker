@@ -168,10 +168,39 @@
             </div> 
         </div> 
 
-        <!-- Shop items grid heading --> 
+           <!-- Shop items grid heading --> 
         <p style="font-size: 30px; font-weight: bold; text-align: center; margin: 40px 0 20px 0;">
             {{ request('category') ? __(request('category')) : __("Dashboard") }}
         </p>
+
+        <!-- Sort / Filter Bar -->
+        <div style="display: flex; justify-content: flex-end; align-items: center; margin-bottom: 20px;">
+            <form method="GET" action="{{ route('customer.dashboard') }}" style="display: flex; align-items: center; gap: 10px; margin: 0;">
+                <!-- so the category and things a user searches for are kept while the filter is on -->
+                @if(request('category'))
+                    <input type="hidden" name="category" value="{{ request('category') }}">
+                @endif
+                @if(request('search'))
+                    <input type="hidden" name="search" value="{{ request('search') }}">
+                @endif
+
+                <label for="sort" style="font-size: 14px; font-weight: 600; color: #555;">
+                    {{ __("Sort by:") }}
+                </label>
+                <select name="sort" id="sort" onchange="this.form.submit()" style="padding: 8px 12px; border: 1px solid #ddd; border-radius: 6px; background-color: #fff; font-size: 14px; color: #333; cursor: pointer;">
+                    <option value="">{{ __("Default") }}</option>
+                    <option value="best_sellers" {{ request('sort') === 'best_sellers' ? 'selected' : '' }}>
+                        {{ __("Best Sellers") }}
+                    </option>
+                    <option value="price_asc" {{ request('sort') === 'price_asc' ? 'selected' : '' }}>
+                        {{ __("Price: Low to High") }}
+                    </option>
+                    <option value="price_desc" {{ request('sort') === 'price_desc' ? 'selected' : '' }}>
+                        {{ __("Price: High to Low") }}
+                    </option>
+                </select>
+            </form>
+        </div>
 
         <!-- Grid Container --> 
         <div class="category-grid-container" style=" display: grid !important; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)) !important; gap: 20px !important; box-sizing: border-box !important; "> 
@@ -179,14 +208,15 @@
                 <div style="grid-column: 1 / -1; margin-bottom: 10px; font-size: 18px;"> 
                     {{ __("Showing results for:") }} <strong>"{{ request('search') }}"</strong> 
                     <a href="{{ route('customer.dashboard') }}" style="margin-left: 15px; color: #007bff; text-decoration: none; font-size: 14px;">{{ __("Clear Search") }}</a> 
-                                @if(request('category')) 
-                    <div style="grid-column: 1 / -1; margin-bottom: 10px; font-size: 18px;"> 
-                        {{ __("Viewing Category:") }} <strong>"{{ __(request('category')) }}"</strong> 
-                        <a href="{{ route('customer.dashboard') }}" style="margin-left: 15px; color: #007bff; text-decoration: none; font-size: 14px;">{{ __("View All Products") }}</a> 
-                    </div> 
-@endif
                 </div> 
-            @endif 
+            @endif
+
+            @if(request('category')) 
+                <div style="grid-column: 1 / -1; margin-bottom: 10px; font-size: 18px;"> 
+                    {{ __("Viewing Category:") }} <strong>"{{ __(request('category')) }}"</strong> 
+                    <a href="{{ route('customer.dashboard') }}" style="margin-left: 15px; color: #007bff; text-decoration: none; font-size: 14px;">{{ __("View All Products") }}</a> 
+                </div> 
+            @endif
 
             @forelse($products as $product) 
                 <!-- The Card Box Wrapper --> 

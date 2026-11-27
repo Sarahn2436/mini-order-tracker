@@ -67,6 +67,41 @@ public function remove(Order $order)
     return redirect()->route('customer.orders')->with('success', 'Order cancelled.');
 }
 
+public function updateStatus(Request $request, Order $order)
+{
+    $validated = $request->validate([
+        'status' => 'required|in:New,In production,Despatched,Cancelled',
+    ]);
+
+    $newStatus = $validated['status'];
+    $currentStatus = $order->status;
+
+    // cant change  an order thats despatcjed or camcelled
+    if (in_array($currentStatus, ['Despatched', 'Cancelled'])) {
+        return back()->with('error', __('Cannot change the status of an order that is already :status.', ['status' => $currentStatus]));
+    }
+
+    // makes it so the statuses are in order so the next bit cn work
+    $progression = [
+        'New' => 1,
+        'In production' => 2,
+        'Despatched' => 3,
+    ];
+
+    // cant change status to a status before it
+    if ($newStatus !== 'Cancelled' && $progression[$newStatus] < $progression[$currentStatus]) {
+        return back()->with('error', __('You cannot move an order status backwards.'));
+    }
+
+    $order->update([
+        'status' => $newStatus,
+    ]);
+
+    return back()->with('success', __('Order status updated successfully.'));
+}
+
+
+
 
 
 }
