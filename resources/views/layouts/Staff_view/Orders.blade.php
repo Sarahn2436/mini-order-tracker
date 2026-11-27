@@ -24,7 +24,6 @@
             background-repeat: no-repeat;
             background-position: right 10px center;
             background-size: 12px;
-           
         }
 
         .status-new {
